@@ -10,10 +10,11 @@ namespace DAL
         private readonly IMongoDatabase databas;
         public MongoDbContext()
         {
-            var klient = new MongoClient("mongodb+srv://oliviagreen2005_db_user:<Hej050831>@orumongodb.kixiigk.mongodb.net/?appName=OruMongoDB");
+            var klient = new MongoClient("mongodb+srv://oliviagreen2005_db_user:<password_db>@orumongodb.kixiigk.mongodb.net/?appName=OruMongoDB");
                 databas = klient.GetDatabase("PoddDb");
         }
 
         public IMongoCollection<T> GetCollection<T>(string namn) => databas.GetCollection<T>(namn);
     }
+
 }
