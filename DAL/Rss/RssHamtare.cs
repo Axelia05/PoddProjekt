@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Xml.Linq;
 using System.Text;
 using DAL.Interfaces;
 using Models;
@@ -12,10 +14,90 @@ namespace DAL.Rss
         {
 
         }
-
-        public Task<Podcast> HamtaPodcastFlodeAsync (string id)
+        public async Task<Podcast> HamtaPodcastFlodeAsync(string url)
         {
-            throw new System.NotImplementedException(); 
+            //Skapar objekt som kan hämta data från internet
+            HttpClient client = new HttpClient();
+
+            //Hämtar RSS-länkens innehåll
+            string xml = await client.GetStringAsync(url);
+
+            XDocument dokument = XDocument.Parse(xml);
+
+            //Skapar podd
+            Podcast podcast = new Podcast();
+
+            podcast.RssUrl = url;
+
+            podcast.Namn =
+                dokument.Root?
+                .Element("channel")?
+                .Element("title")?
+                .Value;
+
+            podcast.Beskrivning =
+                dokument.Root?
+                .Element("channel")?
+                .Element("description")?
+                .Value;
+
+            podcast.Avsnitt = new List<Avsnitt>();
+
+            //Loopar igenom avsnitt
+            foreach (var item in dokument.Descendants("item"))
+            {
+                podcast.Avsnitt.Add(new Avsnitt
+                {
+                    Titel = item.Element("title")?.Value,
+                    Beskrivning = item.Element("description")?.Value
+                });
+            }
+
+            return podcast;
         }
     }
 }
+    public class RssHamtare : IRssHamtare
+    {
+        public RssHamtare()
+        {
+
+        }
+        public async Task<Podcast> HamtaPodcastFlodeAsync(string url)
+        {
+            HttpClient client = new HttpClient();
+
+            string xml = await client.GetStringAsync(url);
+
+            XDocument dokument = XDocument.Parse(xml);
+
+            Podcast podcast = new Podcast();
+
+            podcast.RssUrl = url;
+
+            podcast.Namn =
+                dokument.Root?
+                .Element("channel")?
+                .Element("title")?
+                .Value;
+
+            podcast.Beskrivning =
+                dokument.Root?
+                .Element("channel")?
+                .Element("description")?
+                .Value;
+
+            podcast.Avsnitt = new List<Avsnitt>();
+
+            foreach (var item in dokument.Descendants("item"))
+            {
+                podcast.Avsnitt.Add(new Avsnitt
+                {
+                    Titel = item.Element("title")?.Value,
+                    Beskrivning = item.Element("description")?.Value
+                });
+            }
+
+            return podcast;
+        }
+    }
