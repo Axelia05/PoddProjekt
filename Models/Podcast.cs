@@ -13,7 +13,6 @@ namespace Models
         public List<Avsnitt> Avsnitt { get; set; }
         public string KategoriId { get; set; }
 
-        public string Test { get; set; }
 
     }
 }
