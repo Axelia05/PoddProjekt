@@ -1,8 +1,9 @@
 using BL;
-using Models;
+using DAL;
 using DAL.Interfaces;
 using DAL.Repositories;
 using DAL.Rss;
+using Models;
 
 
 namespace PL
@@ -15,9 +16,12 @@ namespace PL
         public Form1()
         {
             InitializeComponent();
+
+            var context = new MongoDbContext();
+
             enPodcastService = new PodcastService(
-                new PodcastRepository(),
-                new AvsnittRepository(),
+                new PodcastRepository(context),
+                new AvsnittRepository(context),
                 new RssHamtare());
         }
 
@@ -50,14 +54,16 @@ namespace PL
             }
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private async void btnSparaPodd_Click(object sender, EventArgs e)
         {
+            {
+                if (hamtadPodd != null)
+                {
+                    await enPodcastService.SparaPodcastAsync(hamtadPodd);
 
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
+                    MessageBox.Show("Podcast sparades!");
+                }
+            }
         }
     }
 }
