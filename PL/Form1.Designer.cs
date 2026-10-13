@@ -37,6 +37,14 @@
             comboBoxValj = new ComboBox();
             lblValjPodd = new Label();
             tabPage2 = new TabPage();
+            btnTaBortPodd = new Button();
+            btnSparaÄndring = new Button();
+            comboBoxKategori = new ComboBox();
+            textBoxNamn = new TextBox();
+            lblKategori = new Label();
+            lblNamn = new Label();
+            listBoxMinaPoddar = new ListBox();
+            lblMinaPoddar = new Label();
             tabPage1 = new TabPage();
             button3 = new Button();
             btnSparaPodd = new Button();
@@ -48,14 +56,6 @@
             listBoxAvsnitt = new ListBox();
             txtBoxSokRss = new TextBox();
             tabControl1 = new TabControl();
-            lblMinaPoddar = new Label();
-            listBoxMinaPoddar = new ListBox();
-            lblNamn = new Label();
-            lblKategori = new Label();
-            textBoxNamn = new TextBox();
-            comboBoxKategori = new ComboBox();
-            btnSparaÄndring = new Button();
-            btnTaBortPodd = new Button();
             tabPage3.SuspendLayout();
             tabPage2.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -95,6 +95,7 @@
             btnVisaDetaljer.TabIndex = 6;
             btnVisaDetaljer.Text = "Visa avsnittsdetaljer";
             btnVisaDetaljer.UseVisualStyleBackColor = true;
+            btnVisaDetaljer.Click += btnVisaDetaljer_Click;
             // 
             // listBoxValtAvsnitt
             // 
@@ -129,6 +130,7 @@
             comboBoxValj.Name = "comboBoxValj";
             comboBoxValj.Size = new Size(187, 33);
             comboBoxValj.TabIndex = 1;
+            comboBoxValj.SelectedIndexChanged += comboBoxValj_SelectedIndexChanged;
             // 
             // lblValjPodd
             // 
@@ -156,6 +158,76 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Mina Poddar";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btnTaBortPodd
+            // 
+            btnTaBortPodd.Location = new Point(616, 313);
+            btnTaBortPodd.Name = "btnTaBortPodd";
+            btnTaBortPodd.Size = new Size(150, 34);
+            btnTaBortPodd.TabIndex = 7;
+            btnTaBortPodd.Text = "Ta bort podcast";
+            btnTaBortPodd.UseVisualStyleBackColor = true;
+            btnTaBortPodd.Click += btnTaBortPodd_Click;
+            // 
+            // btnSparaÄndring
+            // 
+            btnSparaÄndring.Location = new Point(460, 313);
+            btnSparaÄndring.Name = "btnSparaÄndring";
+            btnSparaÄndring.Size = new Size(150, 34);
+            btnSparaÄndring.TabIndex = 6;
+            btnSparaÄndring.Text = "Spara ändringar";
+            btnSparaÄndring.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxKategori
+            // 
+            comboBoxKategori.FormattingEnabled = true;
+            comboBoxKategori.Location = new Point(518, 186);
+            comboBoxKategori.Name = "comboBoxKategori";
+            comboBoxKategori.Size = new Size(182, 33);
+            comboBoxKategori.TabIndex = 5;
+            // 
+            // textBoxNamn
+            // 
+            textBoxNamn.Location = new Point(518, 109);
+            textBoxNamn.Name = "textBoxNamn";
+            textBoxNamn.Size = new Size(182, 31);
+            textBoxNamn.TabIndex = 4;
+            // 
+            // lblKategori
+            // 
+            lblKategori.AutoSize = true;
+            lblKategori.Location = new Point(566, 158);
+            lblKategori.Name = "lblKategori";
+            lblKategori.Size = new Size(82, 25);
+            lblKategori.TabIndex = 3;
+            lblKategori.Text = "Kategori:";
+            // 
+            // lblNamn
+            // 
+            lblNamn.AutoSize = true;
+            lblNamn.Location = new Point(566, 81);
+            lblNamn.Name = "lblNamn";
+            lblNamn.Size = new Size(64, 25);
+            lblNamn.TabIndex = 2;
+            lblNamn.Text = "Namn:";
+            // 
+            // listBoxMinaPoddar
+            // 
+            listBoxMinaPoddar.FormattingEnabled = true;
+            listBoxMinaPoddar.Location = new Point(76, 93);
+            listBoxMinaPoddar.Name = "listBoxMinaPoddar";
+            listBoxMinaPoddar.Size = new Size(232, 254);
+            listBoxMinaPoddar.TabIndex = 1;
+            listBoxMinaPoddar.SelectedIndexChanged += listBoxMinaPoddar_SelectedIndexChanged;
+            // 
+            // lblMinaPoddar
+            // 
+            lblMinaPoddar.AutoSize = true;
+            lblMinaPoddar.Location = new Point(129, 46);
+            lblMinaPoddar.Name = "lblMinaPoddar";
+            lblMinaPoddar.Size = new Size(119, 25);
+            lblMinaPoddar.TabIndex = 0;
+            lblMinaPoddar.Text = "Mina poddar:";
             // 
             // tabPage1
             // 
@@ -264,74 +336,6 @@
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(799, 453);
             tabControl1.TabIndex = 0;
-            // 
-            // lblMinaPoddar
-            // 
-            lblMinaPoddar.AutoSize = true;
-            lblMinaPoddar.Location = new Point(129, 46);
-            lblMinaPoddar.Name = "lblMinaPoddar";
-            lblMinaPoddar.Size = new Size(119, 25);
-            lblMinaPoddar.TabIndex = 0;
-            lblMinaPoddar.Text = "Mina poddar:";
-            // 
-            // listBoxMinaPoddar
-            // 
-            listBoxMinaPoddar.FormattingEnabled = true;
-            listBoxMinaPoddar.Location = new Point(76, 93);
-            listBoxMinaPoddar.Name = "listBoxMinaPoddar";
-            listBoxMinaPoddar.Size = new Size(232, 254);
-            listBoxMinaPoddar.TabIndex = 1;
-            // 
-            // lblNamn
-            // 
-            lblNamn.AutoSize = true;
-            lblNamn.Location = new Point(566, 81);
-            lblNamn.Name = "lblNamn";
-            lblNamn.Size = new Size(64, 25);
-            lblNamn.TabIndex = 2;
-            lblNamn.Text = "Namn:";
-            // 
-            // lblKategori
-            // 
-            lblKategori.AutoSize = true;
-            lblKategori.Location = new Point(566, 158);
-            lblKategori.Name = "lblKategori";
-            lblKategori.Size = new Size(82, 25);
-            lblKategori.TabIndex = 3;
-            lblKategori.Text = "Kategori:";
-            // 
-            // textBoxNamn
-            // 
-            textBoxNamn.Location = new Point(518, 109);
-            textBoxNamn.Name = "textBoxNamn";
-            textBoxNamn.Size = new Size(182, 31);
-            textBoxNamn.TabIndex = 4;
-            // 
-            // comboBoxKategori
-            // 
-            comboBoxKategori.FormattingEnabled = true;
-            comboBoxKategori.Location = new Point(518, 186);
-            comboBoxKategori.Name = "comboBoxKategori";
-            comboBoxKategori.Size = new Size(182, 33);
-            comboBoxKategori.TabIndex = 5;
-            // 
-            // btnSparaÄndring
-            // 
-            btnSparaÄndring.Location = new Point(460, 313);
-            btnSparaÄndring.Name = "btnSparaÄndring";
-            btnSparaÄndring.Size = new Size(150, 34);
-            btnSparaÄndring.TabIndex = 6;
-            btnSparaÄndring.Text = "Spara ändringar";
-            btnSparaÄndring.UseVisualStyleBackColor = true;
-            // 
-            // btnTaBortPodd
-            // 
-            btnTaBortPodd.Location = new Point(616, 313);
-            btnTaBortPodd.Name = "btnTaBortPodd";
-            btnTaBortPodd.Size = new Size(150, 34);
-            btnTaBortPodd.TabIndex = 7;
-            btnTaBortPodd.Text = "Ta bort podcast";
-            btnTaBortPodd.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
