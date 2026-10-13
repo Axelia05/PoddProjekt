@@ -9,7 +9,7 @@ namespace DAL.Interfaces
     {
         Task<List<Kategori>> HamtaAllaKategorierAsync();
         Task LaggTillKategoriAsync(Kategori kategori);
-        Task UppdateraKategoriAsync(Kategori kategori);
+        Task UppdateraKategoriNamnAsync(string id, string nyttNamn);
         Task TaBortKategoriAsync(string id);
     }
 }

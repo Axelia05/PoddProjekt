@@ -3,40 +3,50 @@ using System.Collections.Generic;
 using System.Text;
 using DAL.Interfaces;
 using Models;
+using MongoDB.Driver;
 
 namespace DAL.Repositories
 {
     public class PodcastRepository : IPodcastRepository
     {
+        //Kopplingen till MongoDB-samlingen för podcasts
+        private readonly IMongoCollection<Podcast> _podcastCollection;
 
-        public PodcastRepository()
+        public PodcastRepository(MongoDbContext context)
         {
-
+            //Hämtar kollektionen för podcasts från databasen
+            _podcastCollection = context.GetCollection<Podcast>("Podcasts");
         }
 
-        public Task<List<Podcast>> HamtaAllaPodcastAsync()
+        //Hämtar alla sparade possar
+        public async Task<List<Podcast>> HamtaAllaPodcastAsync()
         {
-            throw new System.NotImplementedException();
+            return await _podcastCollection.Find(p => true).ToListAsync();
         }
 
-        public Task<Podcast> HamtaPodcastViaIdAsync(string id)
+        //Hämtar en specifik podcast från databasen baserat på dess unika ID
+        public async Task<Podcast> HamtaPodcastViaIdAsync(string id)
         {
-            throw new System.NotImplementedException();
+            return await _podcastCollection.Find(p => p.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task LaggTillPodcastAsync(Podcast podcast)
+        //Lägger till en ny podcast
+        public async Task LaggTillPodcastAsync(Podcast podcast)
         {
-            throw new System.NotImplementedException();
+            await _podcastCollection.InsertOneAsync(podcast);
         }
 
-        public Task UppdateraPodcastAsync(Podcast podcast)
+        //Uppdaterar endast namnet på en specifik podcast baserat på dess ID
+        public async Task UppdateraPodcastNamnAsync(string id, string nyttNamn)
         {
-            throw new System.NotImplementedException(); 
+            var update = Builders<Podcast>.Update.Set(p => p.Namn, nyttNamn);
+            await _podcastCollection.UpdateOneAsync(p => p.Id == id, update);
         }
 
-        public Task TaBortPodcastAsync(string id)
+        //Tar bort en podcast
+        public async Task TaBortPodcastAsync(string id)
         {
-            throw new System.NotImplementedException();
+            await _podcastCollection.DeleteOneAsync(p => p.Id == id);
         }
     }
 }

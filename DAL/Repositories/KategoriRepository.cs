@@ -3,34 +3,45 @@ using System.Collections.Generic;
 using System.Text;
 using DAL.Interfaces;
 using Models;
+using MongoDB.Driver;
 
 namespace DAL.Repositories
 {
     public class KategoriRepository : IKategoriRepository
     {
-        public KategoriRepository()
+        //Kopplingen till MongoDB-samlingen för kategorier
+        private readonly IMongoCollection<Kategori> _kategoriCollection;
+        public KategoriRepository(MongoDbContext context)
         {
-
+            _kategoriCollection = context.GetCollection<Kategori>("kategorier");
         }
 
-        public Task<List<Kategori>> HamtaAllaKategorierAsync()
+        //Hämtar alla kategorier
+        public async Task<List<Kategori>> HamtaAllaKategorierAsync()
         {
-            throw new System.NotImplementedException();
+            return await _kategoriCollection.Find(k => true).ToListAsync();
         }
 
-        public Task LaggTillKategoriAsync(Kategori kategori)
+        //Lägger till en ny kategori
+        public async Task LaggTillKategoriAsync(Kategori kategori)
         {
-            throw new System.NotImplementedException(); 
+            if(kategori != null)
+            {
+                await _kategoriCollection.InsertOneAsync(kategori);
+            }
         }
 
-        public Task UppdateraKategoriAsync (Kategori kategori)
+        //Uppdaterar namn på en kategori
+        public async Task UppdateraKategoriNamnAsync (string id, string nyttNamn)
         {
-            throw new System.NotImplementedException(); 
+            var update = Builders<Kategori>.Update.Set(k => k.Namn, nyttNamn);
+            await _kategoriCollection.UpdateOneAsync(k => k.Id == id, update);
         }
 
-        public Task TaBortKategoriAsync(string id)
+        //Tar bort en kategori
+        public async Task TaBortKategoriAsync(string id)
         {
-            throw new System.NotImplementedException ();    
+            await _kategoriCollection.DeleteOneAsync(k => k.Id == id);  
         }
     }
 }
