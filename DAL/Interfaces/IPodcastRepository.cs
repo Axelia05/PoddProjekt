@@ -11,6 +11,7 @@ namespace DAL.Interfaces
         Task<Podcast> HamtaPodcastViaIdAsync(string id);
         Task LaggTillPodcastAsync(Podcast podcast);
         Task UppdateraPodcastNamnAsync(string id, string nyttNamn);
+        Task UppdateraPodcastAsync(Podcast podcast); 
         Task TaBortPodcastAsync(string id);
     }
 }

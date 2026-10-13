@@ -2,6 +2,7 @@
 using Models;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 
 namespace BL
@@ -43,15 +44,7 @@ namespace BL
         //Ändrar namnet på en sparad podd
         public async Task AndraPodcastNamnAsync(string podcastId, string nyttNamn)
         {
-            Podcast enPodcast =
-                await _podcastRepo.HamtaPodcastViaIdAsync(podcastId);
-
-            if (enPodcast != null)
-            {
-                enPodcast.Namn = nyttNamn;
-
-                await _podcastRepo.UppdateraPodcastAsync(enPodcast);
-            }
+            await _podcastRepo.UppdateraPodcastNamnAsync(podcastId, nyttNamn);
         }
 
         //Byter kategori på podd

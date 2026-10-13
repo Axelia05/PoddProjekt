@@ -43,6 +43,12 @@ namespace DAL.Repositories
             await _podcastCollection.UpdateOneAsync(p => p.Id == id, update);
         }
 
+        //Ersätter hela podcast-dokumentet i databasen för att uppdatera det
+        public async Task UppdateraPodcastAsync(Podcast podcast)
+        {
+            await _podcastCollection.ReplaceOneAsync(p => p.Id == podcast.Id, podcast);
+        }
+
         //Tar bort en podcast
         public async Task TaBortPodcastAsync(string id)
         {

@@ -57,47 +57,4 @@ namespace DAL.Rss
         }
     }
 }
-    public class RssHamtare : IRssHamtare
-    {
-        public RssHamtare()
-        {
-
-        }
-        public async Task<Podcast> HamtaPodcastFlodeAsync(string url)
-        {
-            HttpClient client = new HttpClient();
-
-            string xml = await client.GetStringAsync(url);
-
-            XDocument dokument = XDocument.Parse(xml);
-
-            Podcast podcast = new Podcast();
-
-            podcast.RssUrl = url;
-
-            podcast.Namn =
-                dokument.Root?
-                .Element("channel")?
-                .Element("title")?
-                .Value;
-
-            podcast.Beskrivning =
-                dokument.Root?
-                .Element("channel")?
-                .Element("description")?
-                .Value;
-
-            podcast.Avsnitt = new List<Avsnitt>();
-
-            foreach (var item in dokument.Descendants("item"))
-            {
-                podcast.Avsnitt.Add(new Avsnitt
-                {
-                    Titel = item.Element("title")?.Value,
-                    Beskrivning = item.Element("description")?.Value
-                });
-            }
-
-            return podcast;
-        }
-    }
+    
