@@ -29,24 +29,39 @@
         private void InitializeComponent()
         {
             tabPage3 = new TabPage();
+            btnVisaDetaljer = new Button();
+            listBoxValtAvsnitt = new ListBox();
+            lblDetaljer = new Label();
+            lblValtAvsnitt = new Label();
+            comboBoxValj = new ComboBox();
+            lblValjPodd = new Label();
             tabPage2 = new TabPage();
             tabPage1 = new TabPage();
-            textBox1 = new TextBox();
-            listBox1 = new ListBox();
-            tabControl1 = new TabControl();
-            label1 = new Label();
-            textBox2 = new TextBox();
-            label2 = new Label();
-            label3 = new Label();
-            button1 = new Button();
-            button2 = new Button();
             button3 = new Button();
+            btnSparaPodd = new Button();
+            btnHamta = new Button();
+            lblAvsnitt = new Label();
+            lblPodd = new Label();
+            txtBoxPodd = new TextBox();
+            label1 = new Label();
+            listBoxAvsnitt = new ListBox();
+            txtBoxSokRss = new TextBox();
+            tabControl1 = new TabControl();
+            rtbDetaljer = new RichTextBox();
+            tabPage3.SuspendLayout();
             tabPage1.SuspendLayout();
             tabControl1.SuspendLayout();
             SuspendLayout();
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(rtbDetaljer);
+            tabPage3.Controls.Add(btnVisaDetaljer);
+            tabPage3.Controls.Add(listBoxValtAvsnitt);
+            tabPage3.Controls.Add(lblDetaljer);
+            tabPage3.Controls.Add(lblValtAvsnitt);
+            tabPage3.Controls.Add(comboBoxValj);
+            tabPage3.Controls.Add(lblValjPodd);
             tabPage3.Location = new Point(4, 34);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
@@ -54,6 +69,60 @@
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Avsnitt";
             tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btnVisaDetaljer
+            // 
+            btnVisaDetaljer.Location = new Point(48, 370);
+            btnVisaDetaljer.Name = "btnVisaDetaljer";
+            btnVisaDetaljer.Size = new Size(220, 34);
+            btnVisaDetaljer.TabIndex = 6;
+            btnVisaDetaljer.Text = "Visa avsnittsdetaljer";
+            btnVisaDetaljer.UseVisualStyleBackColor = true;
+            btnVisaDetaljer.Click += button1_Click;
+            // 
+            // listBoxValtAvsnitt
+            // 
+            listBoxValtAvsnitt.FormattingEnabled = true;
+            listBoxValtAvsnitt.Location = new Point(107, 131);
+            listBoxValtAvsnitt.Name = "listBoxValtAvsnitt";
+            listBoxValtAvsnitt.Size = new Size(260, 179);
+            listBoxValtAvsnitt.TabIndex = 4;
+            // 
+            // lblDetaljer
+            // 
+            lblDetaljer.AutoSize = true;
+            lblDetaljer.Location = new Point(396, 94);
+            lblDetaljer.Name = "lblDetaljer";
+            lblDetaljer.Size = new Size(137, 25);
+            lblDetaljer.TabIndex = 3;
+            lblDetaljer.Text = "Avsnittsdetaljer:";
+            // 
+            // lblValtAvsnitt
+            // 
+            lblValtAvsnitt.AutoSize = true;
+            lblValtAvsnitt.Location = new Point(107, 94);
+            lblValtAvsnitt.Name = "lblValtAvsnitt";
+            lblValtAvsnitt.Size = new Size(71, 25);
+            lblValtAvsnitt.TabIndex = 2;
+            lblValtAvsnitt.Text = "Avsnitt:";
+            lblValtAvsnitt.Click += label2_Click;
+            // 
+            // comboBoxValj
+            // 
+            comboBoxValj.FormattingEnabled = true;
+            comboBoxValj.Location = new Point(145, 32);
+            comboBoxValj.Name = "comboBoxValj";
+            comboBoxValj.Size = new Size(187, 33);
+            comboBoxValj.TabIndex = 1;
+            // 
+            // lblValjPodd
+            // 
+            lblValjPodd.AutoSize = true;
+            lblValjPodd.Location = new Point(27, 32);
+            lblValjPodd.Name = "lblValjPodd";
+            lblValjPodd.Size = new Size(112, 25);
+            lblValjPodd.TabIndex = 0;
+            lblValjPodd.Text = "Välj podcast:";
             // 
             // tabPage2
             // 
@@ -68,14 +137,14 @@
             // tabPage1
             // 
             tabPage1.Controls.Add(button3);
-            tabPage1.Controls.Add(button2);
-            tabPage1.Controls.Add(button1);
-            tabPage1.Controls.Add(label3);
-            tabPage1.Controls.Add(label2);
-            tabPage1.Controls.Add(textBox2);
+            tabPage1.Controls.Add(btnSparaPodd);
+            tabPage1.Controls.Add(btnHamta);
+            tabPage1.Controls.Add(lblAvsnitt);
+            tabPage1.Controls.Add(lblPodd);
+            tabPage1.Controls.Add(txtBoxPodd);
             tabPage1.Controls.Add(label1);
-            tabPage1.Controls.Add(listBox1);
-            tabPage1.Controls.Add(textBox1);
+            tabPage1.Controls.Add(listBoxAvsnitt);
+            tabPage1.Controls.Add(txtBoxSokRss);
             tabPage1.Location = new Point(4, 34);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
@@ -84,20 +153,82 @@
             tabPage1.Text = "Utforska";
             tabPage1.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // button3
             // 
-            textBox1.Location = new Point(82, 47);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(204, 31);
-            textBox1.TabIndex = 0;
+            button3.Location = new Point(619, 329);
+            button3.Name = "button3";
+            button3.Size = new Size(112, 34);
+            button3.TabIndex = 8;
+            button3.Text = "button3";
+            button3.UseVisualStyleBackColor = true;
             // 
-            // listBox1
+            // btnSparaPodd
             // 
-            listBox1.FormattingEnabled = true;
-            listBox1.Location = new Point(360, 129);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(208, 129);
-            listBox1.TabIndex = 1;
+            btnSparaPodd.Location = new Point(47, 329);
+            btnSparaPodd.Name = "btnSparaPodd";
+            btnSparaPodd.Size = new Size(220, 34);
+            btnSparaPodd.TabIndex = 7;
+            btnSparaPodd.Text = "Spara till Mina Poddar";
+            btnSparaPodd.UseVisualStyleBackColor = true;
+            // 
+            // btnHamta
+            // 
+            btnHamta.Location = new Point(292, 45);
+            btnHamta.Name = "btnHamta";
+            btnHamta.Size = new Size(112, 34);
+            btnHamta.TabIndex = 6;
+            btnHamta.Text = "Hämta";
+            btnHamta.UseVisualStyleBackColor = true;
+            btnHamta.Click += btnHamta_Click;
+            // 
+            // lblAvsnitt
+            // 
+            lblAvsnitt.AutoSize = true;
+            lblAvsnitt.Location = new Point(360, 91);
+            lblAvsnitt.Name = "lblAvsnitt";
+            lblAvsnitt.Size = new Size(71, 25);
+            lblAvsnitt.TabIndex = 5;
+            lblAvsnitt.Text = "Avsnitt:";
+            // 
+            // lblPodd
+            // 
+            lblPodd.AutoSize = true;
+            lblPodd.Location = new Point(82, 91);
+            lblPodd.Name = "lblPodd";
+            lblPodd.Size = new Size(78, 25);
+            lblPodd.TabIndex = 4;
+            lblPodd.Text = "Podcast:";
+            // 
+            // txtBoxPodd
+            // 
+            txtBoxPodd.Location = new Point(82, 129);
+            txtBoxPodd.Name = "txtBoxPodd";
+            txtBoxPodd.Size = new Size(204, 31);
+            txtBoxPodd.TabIndex = 3;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(82, 19);
+            label1.Name = "label1";
+            label1.Size = new Size(171, 25);
+            label1.TabIndex = 2;
+            label1.Text = "Sök efter Podd (rss):";
+            // 
+            // listBoxAvsnitt
+            // 
+            listBoxAvsnitt.FormattingEnabled = true;
+            listBoxAvsnitt.Location = new Point(360, 129);
+            listBoxAvsnitt.Name = "listBoxAvsnitt";
+            listBoxAvsnitt.Size = new Size(208, 129);
+            listBoxAvsnitt.TabIndex = 1;
+            // 
+            // txtBoxSokRss
+            // 
+            txtBoxSokRss.Location = new Point(82, 47);
+            txtBoxSokRss.Name = "txtBoxSokRss";
+            txtBoxSokRss.Size = new Size(204, 31);
+            txtBoxSokRss.TabIndex = 0;
             // 
             // tabControl1
             // 
@@ -110,66 +241,13 @@
             tabControl1.Size = new Size(799, 453);
             tabControl1.TabIndex = 0;
             // 
-            // label1
+            // rtbDetaljer
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(82, 19);
-            label1.Name = "label1";
-            label1.Size = new Size(171, 25);
-            label1.TabIndex = 2;
-            label1.Text = "Sök efter Podd (rss):";
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(82, 129);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(204, 31);
-            textBox2.TabIndex = 3;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(82, 91);
-            label2.Name = "label2";
-            label2.Size = new Size(89, 25);
-            label2.TabIndex = 4;
-            label2.Text = "Poddcast:";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(360, 91);
-            label3.Name = "label3";
-            label3.Size = new Size(71, 25);
-            label3.TabIndex = 5;
-            label3.Text = "Avsnitt:";
-            // 
-            // button1
-            // 
-            button1.Location = new Point(292, 45);
-            button1.Name = "button1";
-            button1.Size = new Size(112, 34);
-            button1.TabIndex = 6;
-            button1.Text = "Hämta";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(47, 329);
-            button2.Name = "button2";
-            button2.Size = new Size(220, 34);
-            button2.TabIndex = 7;
-            button2.Text = "Spara till Mina Poddar";
-            button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            button3.Location = new Point(619, 329);
-            button3.Name = "button3";
-            button3.Size = new Size(112, 34);
-            button3.TabIndex = 8;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
+            rtbDetaljer.Location = new Point(396, 130);
+            rtbDetaljer.Name = "rtbDetaljer";
+            rtbDetaljer.Size = new Size(260, 180);
+            rtbDetaljer.TabIndex = 7;
+            rtbDetaljer.Text = "";
             // 
             // Form1
             // 
@@ -180,6 +258,8 @@
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
+            tabPage3.ResumeLayout(false);
+            tabPage3.PerformLayout();
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             tabControl1.ResumeLayout(false);
@@ -192,14 +272,21 @@
         private TabPage tabPage2;
         private TabPage tabPage1;
         private Label label1;
-        private ListBox listBox1;
-        private TextBox textBox1;
+        private ListBox listBoxAvsnitt;
+        private TextBox txtBoxSokRss;
         private TabControl tabControl1;
-        private Label label3;
-        private Label label2;
-        private TextBox textBox2;
+        private Label lblAvsnitt;
+        private Label lblPodd;
+        private TextBox txtBoxPodd;
         private Button button3;
-        private Button button2;
-        private Button button1;
+        private Button btnSparaPodd;
+        private Button btnHamta;
+        private Label lblValtAvsnitt;
+        private ComboBox comboBoxValj;
+        private Label lblValjPodd;
+        private Label lblDetaljer;
+        private Button btnVisaDetaljer;
+        private ListBox listBoxValtAvsnitt;
+        private RichTextBox rtbDetaljer;
     }
 }
