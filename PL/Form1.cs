@@ -27,9 +27,10 @@ namespace PL
                 new RssHamtare());
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
-
+            await VisaSparadePoddar();
+            await VisaPodcastComboBox();
         }
 
         private void txtBoxPodd_TextChanged(object sender, EventArgs e)
@@ -63,29 +64,41 @@ namespace PL
                 await enPodcastService.SparaPodcastAsync(hamtadPodd);
 
                 await VisaSparadePoddar();
+                await VisaPodcastComboBox();
 
                 MessageBox.Show("Podcast har sparats!");
             }
         }
 
+        //Lägger till poddar i podcast
         private async Task VisaSparadePoddar()
         {
             var poddar = await enPodcastService.HamtaAllaPoddarAsync();
-
+            //Lägger till poddarna i mina poddar
             listBoxMinaPoddar.DataSource = null;
             listBoxMinaPoddar.DataSource = poddar;
             listBoxMinaPoddar.DisplayMember = "Namn";
+        }
+
+        //Lägger till poddar i combobox för avsnittssidan
+        private async Task VisaPodcastComboBox()
+        {
+            var poddar = await enPodcastService.HamtaAllaPoddarAsync();
+
+            comboBoxValj.DataSource = null;
+            comboBoxValj.DataSource = poddar;
+            comboBoxValj.DisplayMember = "Namn";
         }
 
         //Knapp för att ta bort en podd
         private async void btnTaBortPodd_Click(object sender, EventArgs e)
         {
             Podcast valdPodd =
-        (Podcast)listBoxMinaPoddar.SelectedItem;
+                (Podcast)listBoxMinaPoddar.SelectedItem;
 
             if (valdPodd == null)
             {
-                MessageBox.Show("Välj den podcast du vill radera!");
+                MessageBox.Show("Välj den podcast du vill radera");
                 return;
             }
 
@@ -99,8 +112,9 @@ namespace PL
                 await enPodcastService.TaBortPodcastAsync(valdPodd.Id);
 
                 await VisaSparadePoddar();
+                await VisaPodcastComboBox();
 
-                MessageBox.Show("Podcasten har tagits bort.");
+                MessageBox.Show("Podcasten har tagits bort");
             }
         }
 
@@ -133,6 +147,43 @@ namespace PL
         }
 
         private void listBoxMinaPoddar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Podcast valdPodd =
+                (Podcast)listBoxMinaPoddar.SelectedItem;
+
+            if (valdPodd == null)
+                return;
+
+            textBoxNamn.Text = valdPodd.Namn;
+        }
+
+        //Sparar namnändrning
+        private async void btnSparaÄndring_Click(object sender, EventArgs e)
+        {
+            Podcast valdPodd =
+                (Podcast)listBoxMinaPoddar.SelectedItem;
+
+            if (valdPodd == null)
+            {
+                MessageBox.Show("Välj först en podcast att byta namn på");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(textBoxNamn.Text))
+            {
+                MessageBox.Show("Ange ett namn");
+                return;
+            }
+            await enPodcastService.AndraPodcastNamnAsync(
+                valdPodd.Id,
+                textBoxNamn.Text);
+
+            await VisaSparadePoddar();
+            await VisaPodcastComboBox();
+
+            MessageBox.Show("Namnet har ändrats");
+        }
+
+        private void comboBoxKategori_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
