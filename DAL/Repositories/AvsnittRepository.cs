@@ -26,12 +26,26 @@ namespace DAL.Repositories
             return await _avsnittCollection.Find(a => a.PodcastId == podcastId).ToListAsync();
         }
 
-        //Lägger till en hel lista med avsnitt på en gång
+        //Lägger till en hel lista med avsnitt på en gång (transaktion används för att kunna rulla tillbaka vid fel)
         public async Task LaggTillAvsnittListaAsync(List<Avsnitt> avsnittLista)
         {
             if(avsnittLista != null && avsnittLista.Count > 0)
             {
-                await _avsnittCollection.InsertManyAsync(avsnittLista);
+                //Startar en session och transaktion för att säkerställa dataintegriteten
+                using var session = await _avsnittCollection.Database.Client.StartSessionAsync();
+                session.StartTransaction();
+
+                try
+                {
+                    await _avsnittCollection.InsertManyAsync(session, avsnittLista);
+                    await session.CommitTransactionAsync(); //Bekräftar ändringen
+                }
+                catch
+                {
+                    await session.AbortTransactionAsync(); //Rullar tillbaka vid fel
+                    throw;
+                }
+                
             }
         }
 
