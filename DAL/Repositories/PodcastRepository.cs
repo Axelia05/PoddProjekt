@@ -30,29 +30,86 @@ namespace DAL.Repositories
             return await _podcastCollection.Find(p => p.Id == id).FirstOrDefaultAsync();
         }
 
-        //Lägger till en ny podcast
+        //Lägger till en ny podcast (transaktion används för att kunna rulla tillbaka vid fel)
         public async Task LaggTillPodcastAsync(Podcast podcast)
         {
-            await _podcastCollection.InsertOneAsync(podcast);
+            //Startar en session och transaktion för att säkerställa dataintegriteten
+            using var session = await _podcastCollection.Database.Client.StartSessionAsync();
+            session.StartTransaction();
+
+            try
+            {
+                await _podcastCollection.InsertOneAsync(session, podcast);
+                await session.CommitTransactionAsync(); //Bekräftar ändringen
+            }
+            catch
+            {
+                await session.AbortTransactionAsync(); //Rullar tillbaka vid fel
+                throw;
+            }
+
         }
 
         //Uppdaterar endast namnet på en specifik podcast baserat på dess ID
+        //(transaktion används för att kunna rulla tillbaka vid fel)
         public async Task UppdateraPodcastNamnAsync(string id, string nyttNamn)
         {
-            var update = Builders<Podcast>.Update.Set(p => p.Namn, nyttNamn);
-            await _podcastCollection.UpdateOneAsync(p => p.Id == id, update);
-        }
+            //Startar en session och transaktion för att säkerställa dataintegriteten
+            using var session = await _podcastCollection.Database.Client.StartSessionAsync();
+            session.StartTransaction();
+
+            try
+            {
+                var update = Builders<Podcast>.Update.Set(p => p.Namn, nyttNamn);
+                await _podcastCollection.UpdateOneAsync(session, p => p.Id == id, update);
+                await session.CommitTransactionAsync(); //Bekräftar ändringen
+            }
+            catch
+            {
+                await session.AbortTransactionAsync(); //Rullar tillbaka vid fel
+                throw;
+            }
+            }
+
 
         //Ersätter hela podcast-dokumentet i databasen för att uppdatera det
+        //(transaktion används för att kunna rulla tillbaka vid fel)
         public async Task UppdateraPodcastAsync(Podcast podcast)
         {
-            await _podcastCollection.ReplaceOneAsync(p => p.Id == podcast.Id, podcast);
+            //Startar en session och transaktion för att säkerställa dataintegriteten
+            using var session = await _podcastCollection.Database.Client.StartSessionAsync();
+            session.StartTransaction();
+
+            try
+            {
+                await _podcastCollection.ReplaceOneAsync(session, p => p.Id == podcast.Id, podcast);
+                await session.CommitTransactionAsync(); //Bekräftar ändringen
+            }
+            catch
+            {
+                await session.AbortTransactionAsync(); //Rullar tillbaka vid fel
+                throw;
+            }
+           
         }
 
-        //Tar bort en podcast
+        //Tar bort en podcast (transaktion används för att kunna rulla tillbaka vid fel)
         public async Task TaBortPodcastAsync(string id)
         {
-            await _podcastCollection.DeleteOneAsync(p => p.Id == id);
+            //Startar en session och transaktion för att säkerställa dataintegriteten
+            using var session = await _podcastCollection.Database.Client.StartSessionAsync();
+            session.StartTransaction();
+
+            try
+            {
+                await _podcastCollection.DeleteOneAsync(session, p => p.Id == id);
+                await session.CommitTransactionAsync(); //Bekräftar ändringen
+            }
+            catch
+            {
+                await session.AbortTransactionAsync(); //Rullar tillbaka vid fel
+                throw;
+            }
         }
     }
 }
