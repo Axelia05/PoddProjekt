@@ -4,20 +4,21 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Data;
+using Models;
 
 namespace BL
 {
     public class AvsnittService
     {
         //Services ska använda DAL:s abstraktioner.
-        private readonly IAvsnittRepository _avsnittRepo; 
+        private readonly IAvsnittRepository _avsnittRepo;
 
         //Dependency Injection: tjänsten får sitt beroende via interfacet.
-        public AvsnittService (IAvsnittRepository avsnittRepo)
+        public AvsnittService(IAvsnittRepository avsnittRepo)
         {
             _avsnittRepo = avsnittRepo;
         }
-    }
+    
 
     public async Task<List<Avsnitt>> HamtaAvsnittForPodcastAsync(string podcastId)
         {
@@ -29,9 +30,9 @@ namespace BL
             var avsnitt = await
                 _avsnittRepo.HamtaAvsnittForPodcastAsync(podcastId);
             avsnitt = avsnitt.OrderByDescending(a => a.Publiceringsdatum)
-                .ToList(); 
+                .ToList();
             return avsnitt;
-            
+
         }
 
         public async Task<Avsnitt> HamtaAvsnittViaAsync(string id)
@@ -47,8 +48,9 @@ namespace BL
             {
                 throw new ArgumentException("Avsnitt hittades inte");
             }
-            return avsnitt; 
+            return avsnitt;
 
         }
 
+    }
 }
