@@ -32,8 +32,8 @@ namespace PL
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            await VisaSparadePoddar();
-            await VisaPodcastComboBox();
+            //await VisaSparadePoddar();
+            //await VisaPodcastComboBox();
             //await VisaKategorier();
             //await VisaKategoriComboBoxar();
         }
@@ -64,14 +64,21 @@ namespace PL
 
         private async void btnSparaPodd_Click(object sender, EventArgs e)
         {
-            if (hamtadPodd != null)
+            try
             {
-                await enPodcastService.SparaPodcastAsync(hamtadPodd);
+                if (hamtadPodd != null)
+                {
+                    await enPodcastService.SparaPodcastAsync(hamtadPodd);
 
-                await VisaSparadePoddar();
-                await VisaPodcastComboBox();
+                    await VisaSparadePoddar();
+                    await VisaPodcastComboBox();
 
-                MessageBox.Show("Podcast har sparats!");
+                    MessageBox.Show("Podcast har sparats!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Kunde inte spara podd: {ex.Message}", "Fel", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
