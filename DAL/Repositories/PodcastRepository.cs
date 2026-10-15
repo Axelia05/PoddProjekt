@@ -111,5 +111,24 @@ namespace DAL.Repositories
                 throw;
             }
         }
+
+        //Ändra kategorin för en podcast
+        public async Task AndraPodcastKategoriAsync(
+            string podcastId,
+            string kategoriId)
+        {
+            var filter = Builders<Podcast>.Filter.Eq(p => p.Id, podcastId);
+            var update = Builders<Podcast>.Update.Set(p => p.KategoriId, kategoriId);
+
+            await _podcastCollection.UpdateOneAsync(filter, update);
+        }
+
+        //Filtrera poddar efter kategori
+        public async Task<List<Podcast>> HamtaPoddarForKategoriAsync(string kategoriId)
+        {
+            var filter = Builders<Podcast>.Filter.Eq(p => p.KategoriId,kategoriId);
+
+            return await _podcastCollection.Find(filter).ToListAsync();
+        }
     }
 }

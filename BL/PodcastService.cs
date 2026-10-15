@@ -72,5 +72,17 @@ namespace BL
         {
             return await _rss.HamtaPodcastFlodeAsync(url);
         }
+
+        //Ändra kategori för en podd
+        public async Task AndraPodcastKategoriAsync(string podcastId, string kategoriId)
+        {
+            await _podcastRepo.AndraPodcastKategoriAsync(podcastId, kategoriId);
+        }
+
+        //Hämtar poddar efter kategori
+        public async Task<List<Podcast>> HamtaPoddarForKategoriAsync(string kategoriId)
+        {
+            return await _podcastRepo.HamtaPoddarForKategoriAsync(kategoriId);
+        }
     }
 }

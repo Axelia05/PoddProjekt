@@ -13,6 +13,7 @@ namespace PL
         //Fält
         private PodcastService enPodcastService;
         private Podcast hamtadPodd;
+        private KategoriService enKategoriService;
 
         //Konstruktor
         public Form1()
@@ -25,12 +26,16 @@ namespace PL
                 new PodcastRepository(context),
                 new AvsnittRepository(context),
                 new RssHamtare());
+            enKategoriService = new KategoriService(
+                new KategoriRepository(context));
         }
 
         private async void Form1_Load(object sender, EventArgs e)
         {
             await VisaSparadePoddar();
             await VisaPodcastComboBox();
+            //await VisaKategorier();
+            //await VisaKategoriComboBoxar();
         }
 
         private void txtBoxPodd_TextChanged(object sender, EventArgs e)
@@ -88,6 +93,31 @@ namespace PL
             comboBoxValj.DataSource = null;
             comboBoxValj.DataSource = poddar;
             comboBoxValj.DisplayMember = "Namn";
+        }
+
+        //Lägger in kategorierna
+        private async Task VisaKategorier()
+        {
+            var kategorier =
+                await enKategoriService.HamtaAllaKategorierAsync();
+
+            listBoxKategorier.DataSource = null;
+            listBoxKategorier.DataSource = kategorier;
+            listBoxKategorier.DisplayMember = "Namn";
+        }
+
+        private async Task VisaKategoriComboBoxar()
+        {
+            var kategorier =
+                await enKategoriService.HamtaAllaKategorierAsync();
+
+            comboBoxPoddKategori.DataSource = null;
+            comboBoxPoddKategori.DataSource = kategorier;
+            comboBoxPoddKategori.DisplayMember = "Namn";
+
+            comboBoxFilterKategori.DataSource = null;
+            comboBoxFilterKategori.DataSource = kategorier.ToList();
+            comboBoxFilterKategori.DisplayMember = "Namn";
         }
 
         //Knapp för att ta bort en podd
@@ -186,6 +216,126 @@ namespace PL
         private void comboBoxKategori_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        //Visar kategori i textbox när användaren klickar
+        private void listBoxKategorier_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Kategori valdKategori =
+                (Kategori)listBoxKategorier.SelectedItem;
+
+            if (valdKategori == null)
+                return;
+
+            textBoxKategoriNamn.Text = valdKategori.Namn;
+        }
+
+        //Knapp för att lägga till kategori
+        private async void btnLaggTill_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBoxKategoriNamn.Text))
+            {
+                MessageBox.Show("Ange ett namn på kategorin du vill lägga till");
+                return;
+            }
+
+            await enKategoriService.LaggTillKategoriAsync(
+                textBoxKategoriNamn.Text);
+
+            await VisaKategorier();
+            await VisaKategoriComboBoxar();
+
+            textBoxKategoriNamn.Clear();
+        }
+
+        //Knapp för att spara ändrat namn på kategorin  
+        private async void btnSparaAndradKategori_Click(object sender, EventArgs e)
+        {
+            Kategori valdKategori =
+                (Kategori)listBoxKategorier.SelectedItem;
+
+            if (valdKategori == null)
+            {
+                MessageBox.Show("Välj den kategori du vill ändra namn på");
+                return;
+            }
+
+            await enKategoriService.UppdateraKategoriNamnAsync(
+                valdKategori.Id,
+                textBoxKategoriNamn.Text);
+
+            await VisaKategorier();
+            await VisaKategoriComboBoxar();
+
+            MessageBox.Show("Kategorins namn har uppdaterats");
+        }
+
+        private async void btnTaBortKategori_Click(object sender, EventArgs e)
+        {
+            Kategori valdKategori =
+                (Kategori)listBoxKategorier.SelectedItem;
+
+            if (valdKategori == null)
+            {
+                MessageBox.Show("Välj den kategori du vill ta bort");
+                return;
+            }
+
+            await enKategoriService.TaBortKategoriAsync(
+                valdKategori.Id);
+
+            await VisaKategorier();
+            await VisaKategoriComboBoxar();
+
+            MessageBox.Show("Kategorin har nu tagits bort");
+        }
+
+        private async void btnTilldela_Click(object sender, EventArgs e)
+        {
+            Podcast valdPodd = (Podcast)listBoxMinaPoddar.SelectedItem;
+
+            Kategori valdKategori = (Kategori)comboBoxPoddKategori.SelectedItem;
+
+            if (valdPodd == null)
+            {
+                MessageBox.Show("Välj en podcast");
+                return;
+            }
+
+            if (valdKategori == null)
+            {
+                MessageBox.Show("Välj en kategori.");
+                return;
+            }
+
+            await enPodcastService.AndraPodcastKategoriAsync(valdPodd.Id, valdKategori.Id);
+
+            MessageBox.Show("Podcasten har tilldelats den valda kategorin");
+        }
+
+        //Filtrera poddar som visas efter kategori
+        private async void btnVisaKategori_Click(object sender, EventArgs e)
+        {
+            Kategori valdKategori = (Kategori)comboBoxFilterKategori.SelectedItem;
+
+            if (valdKategori == null)
+            {
+                MessageBox.Show("Välj en kategori.");
+                return;
+            }
+
+            var poddar =
+                await enPodcastService.HamtaPoddarForKategoriAsync(
+                    valdKategori.Id);
+
+            listBoxMinaPoddar.DataSource = null;
+            listBoxMinaPoddar.DataSource = poddar;
+            listBoxMinaPoddar.DisplayMember = "Namn";
+        }
+        //Visar återigen alla poddar i listboxen
+        private async void btnVisaAlla_Click(object sender, EventArgs e)
+        {
+            await VisaSparadePoddar();
         }
     }
 }

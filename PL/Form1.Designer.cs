@@ -37,6 +37,13 @@
             comboBoxValj = new ComboBox();
             lblValjPodd = new Label();
             tabPageMinaPoddar = new TabPage();
+            comboBoxFilterKategori = new ComboBox();
+            label2 = new Label();
+            btnVisaAlla = new Button();
+            btnVisaKategori = new Button();
+            btnTilldela = new Button();
+            comboBoxPoddKategori = new ComboBox();
+            lblPoddKategori = new Label();
             btnTaBortPodd = new Button();
             btnSparaÄndring = new Button();
             textBoxNamn = new TextBox();
@@ -150,6 +157,13 @@
             // 
             // tabPageMinaPoddar
             // 
+            tabPageMinaPoddar.Controls.Add(comboBoxFilterKategori);
+            tabPageMinaPoddar.Controls.Add(label2);
+            tabPageMinaPoddar.Controls.Add(btnVisaAlla);
+            tabPageMinaPoddar.Controls.Add(btnVisaKategori);
+            tabPageMinaPoddar.Controls.Add(btnTilldela);
+            tabPageMinaPoddar.Controls.Add(comboBoxPoddKategori);
+            tabPageMinaPoddar.Controls.Add(lblPoddKategori);
             tabPageMinaPoddar.Controls.Add(btnTaBortPodd);
             tabPageMinaPoddar.Controls.Add(btnSparaÄndring);
             tabPageMinaPoddar.Controls.Add(textBoxNamn);
@@ -164,9 +178,73 @@
             tabPageMinaPoddar.Text = "Mina Poddar";
             tabPageMinaPoddar.UseVisualStyleBackColor = true;
             // 
+            // comboBoxFilterKategori
+            // 
+            comboBoxFilterKategori.FormattingEnabled = true;
+            comboBoxFilterKategori.Location = new Point(531, 256);
+            comboBoxFilterKategori.Name = "comboBoxFilterKategori";
+            comboBoxFilterKategori.Size = new Size(182, 33);
+            comboBoxFilterKategori.TabIndex = 14;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(531, 223);
+            label2.Name = "label2";
+            label2.Size = new Size(176, 25);
+            label2.TabIndex = 13;
+            label2.Text = "Filtrera efter kategori";
+            // 
+            // btnVisaAlla
+            // 
+            btnVisaAlla.Location = new Point(567, 334);
+            btnVisaAlla.Name = "btnVisaAlla";
+            btnVisaAlla.Size = new Size(112, 34);
+            btnVisaAlla.TabIndex = 12;
+            btnVisaAlla.Text = "Visa alla";
+            btnVisaAlla.UseVisualStyleBackColor = true;
+            btnVisaAlla.Click += btnVisaAlla_Click;
+            // 
+            // btnVisaKategori
+            // 
+            btnVisaKategori.Location = new Point(542, 295);
+            btnVisaKategori.Name = "btnVisaKategori";
+            btnVisaKategori.Size = new Size(161, 33);
+            btnVisaKategori.TabIndex = 11;
+            btnVisaKategori.Text = "Filtrera";
+            btnVisaKategori.UseVisualStyleBackColor = true;
+            btnVisaKategori.Click += btnVisaKategori_Click;
+            // 
+            // btnTilldela
+            // 
+            btnTilldela.Location = new Point(542, 163);
+            btnTilldela.Name = "btnTilldela";
+            btnTilldela.Size = new Size(150, 34);
+            btnTilldela.TabIndex = 10;
+            btnTilldela.Text = "Tilldela kategori";
+            btnTilldela.UseVisualStyleBackColor = true;
+            btnTilldela.Click += btnTilldela_Click;
+            // 
+            // comboBoxPoddKategori
+            // 
+            comboBoxPoddKategori.FormattingEnabled = true;
+            comboBoxPoddKategori.Location = new Point(531, 124);
+            comboBoxPoddKategori.Name = "comboBoxPoddKategori";
+            comboBoxPoddKategori.Size = new Size(182, 33);
+            comboBoxPoddKategori.TabIndex = 9;
+            // 
+            // lblPoddKategori
+            // 
+            lblPoddKategori.AutoSize = true;
+            lblPoddKategori.Location = new Point(552, 93);
+            lblPoddKategori.Name = "lblPoddKategori";
+            lblPoddKategori.Size = new Size(140, 25);
+            lblPoddKategori.TabIndex = 8;
+            lblPoddKategori.Text = "Tilldela kategori:";
+            // 
             // btnTaBortPodd
             // 
-            btnTaBortPodd.Location = new Point(530, 224);
+            btnTaBortPodd.Location = new Point(340, 254);
             btnTaBortPodd.Name = "btnTaBortPodd";
             btnTaBortPodd.Size = new Size(150, 34);
             btnTaBortPodd.TabIndex = 7;
@@ -176,7 +254,7 @@
             // 
             // btnSparaÄndring
             // 
-            btnSparaÄndring.Location = new Point(530, 174);
+            btnSparaÄndring.Location = new Point(340, 204);
             btnSparaÄndring.Name = "btnSparaÄndring";
             btnSparaÄndring.Size = new Size(150, 34);
             btnSparaÄndring.TabIndex = 6;
@@ -186,15 +264,15 @@
             // 
             // textBoxNamn
             // 
-            textBoxNamn.Location = new Point(518, 109);
+            textBoxNamn.Location = new Point(328, 155);
             textBoxNamn.Name = "textBoxNamn";
-            textBoxNamn.Size = new Size(182, 31);
+            textBoxNamn.Size = new Size(169, 31);
             textBoxNamn.TabIndex = 4;
             // 
             // lblNamn
             // 
             lblNamn.AutoSize = true;
-            lblNamn.Location = new Point(566, 81);
+            lblNamn.Location = new Point(376, 127);
             lblNamn.Name = "lblNamn";
             lblNamn.Size = new Size(64, 25);
             lblNamn.TabIndex = 2;
@@ -361,6 +439,7 @@
             btnSparaAndradKategori.TabIndex = 6;
             btnSparaAndradKategori.Text = "Ändra namn";
             btnSparaAndradKategori.UseVisualStyleBackColor = true;
+            btnSparaAndradKategori.Click += btnSparaAndradKategori_Click;
             // 
             // btnTaBortKategori
             // 
@@ -370,6 +449,7 @@
             btnTaBortKategori.TabIndex = 5;
             btnTaBortKategori.Text = "Ta bort";
             btnTaBortKategori.UseVisualStyleBackColor = true;
+            btnTaBortKategori.Click += btnTaBortKategori_Click;
             // 
             // btnLaggTill
             // 
@@ -379,6 +459,7 @@
             btnLaggTill.TabIndex = 4;
             btnLaggTill.Text = "Lägg till";
             btnLaggTill.UseVisualStyleBackColor = true;
+            btnLaggTill.Click += btnLaggTill_Click;
             // 
             // textBoxKategoriNamn
             // 
@@ -403,6 +484,7 @@
             listBoxKategorier.Name = "listBoxKategorier";
             listBoxKategorier.Size = new Size(196, 204);
             listBoxKategorier.TabIndex = 1;
+            listBoxKategorier.SelectedIndexChanged += listBoxKategorier_SelectedIndexChanged;
             // 
             // Form1
             // 
@@ -461,5 +543,12 @@
         private Label lblKategoriNamn;
         private ListBox listBoxKategorier;
         private Label lblKategorier;
+        private Label lblPoddKategori;
+        private Button btnTilldela;
+        private ComboBox comboBoxPoddKategori;
+        private Button btnVisaKategori;
+        private ComboBox comboBoxFilterKategori;
+        private Label label2;
+        private Button btnVisaAlla;
     }
 }
