@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using System.Data;
 
 namespace BL
 {
@@ -16,4 +18,37 @@ namespace BL
             _avsnittRepo = avsnittRepo;
         }
     }
+
+    public async Task<List<Avsnitt>> HamtaAvsnittForPodcastAsync(string podcastId)
+        {
+            if (string.IsNullOrWhiteSpace(podcastId))
+            {
+                throw new ArgumentException("PodcastId saknas");
+            }
+
+            var avsnitt = await
+                _avsnittRepo.HamtaAvsnittForPodcastAsync(podcastId);
+            avsnitt = avsnitt.OrderByDescending(a => a.Publiceringsdatum)
+                .ToList(); 
+            return avsnitt;
+            
+        }
+
+        public async Task<Avsnitt> HamtaAvsnittViaAsync(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                throw new ArgumentException("AvsnittId saknas");
+            }
+
+            var avsnitt = await
+                _avsnittRepo.HamtaAvsnittViaIdAsync(id);
+            if (avsnitt == null)
+            {
+                throw new ArgumentException("Avsnitt hittades inte");
+            }
+            return avsnitt; 
+
+        }
+
 }
