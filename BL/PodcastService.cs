@@ -1,4 +1,5 @@
-﻿using DAL.Interfaces;
+﻿using BL.Interfaces;
+using DAL.Interfaces;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace BL
 {
-    public class PodcastService
+    public class PodcastService : IPodcastService
     {
 
         //Services ska använda DAL:s abstraktioner.
@@ -16,9 +17,9 @@ namespace BL
         private readonly IRssHamtare _rss;
 
         //Dependency Injection: tjänsten får sitt beroende via interfacen.
-        public PodcastService(IPodcastRepository poddcastRepo, IAvsnittRepository avsnittrepo, IRssHamtare rss)
+        public PodcastService(IPodcastRepository podcastRepo, IAvsnittRepository avsnittrepo, IRssHamtare rss)
         {
-            _podcastRepo = poddcastRepo;
+            _podcastRepo = podcastRepo;
             _avsnittRepo = avsnittrepo;
             _rss = rss;
         }
