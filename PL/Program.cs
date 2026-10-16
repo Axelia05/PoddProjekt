@@ -1,3 +1,10 @@
+using DAL;
+using DAL.Interfaces;
+using DAL.Repositories;
+using DAL.Rss;
+using BL;
+using BL.Interfaces;
+
 namespace PL
 {
     internal static class Program
@@ -11,7 +18,23 @@ namespace PL
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+
+            //skapar databas-kontexten
+            var context = new MongoDbContext();
+
+            //Skapa repositorys via interfacen
+            IPodcastRepository podcastRepo = new PodcastRepository(context);
+            IAvsnittRepository avsnittRepo = new AvsnittRepository(context);    
+            IKategoriRepository kategoriRepo = new KategoriRepository(context);
+            IRssHamtare rssHamtare = new RssHamtare();
+
+            //Skapar tjänsterna via interfacen
+            IPodcastService podcastService = new PodcastService(podcastRepo, avsnittRepo, rssHamtare);
+            IKategoriService kategoriService = new KategoriService(kategoriRepo);
+            IAvsnittService avsnittService = new AvsnittService(avsnittRepo);
+
+            //Startar formuläret och skickar in alla tre tjänster
+            Application.Run(new Form1(podcastService, kategoriService, avsnittService));
         }
     }
 }

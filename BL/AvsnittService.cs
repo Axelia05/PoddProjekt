@@ -5,10 +5,11 @@ using System.Text;
 using System.Linq;
 using System.Data;
 using Models;
+using BL.Interfaces;
 
 namespace BL
 {
-    public class AvsnittService
+    public class AvsnittService : IAvsnittService 
     {
         //Services ska använda DAL:s abstraktioner.
         private readonly IAvsnittRepository _avsnittRepo;

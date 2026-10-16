@@ -1,41 +1,42 @@
 using BL;
+using BL.Interfaces;
 using DAL;
 using DAL.Interfaces;
 using DAL.Repositories;
 using DAL.Rss;
 using Models;
+using System.CodeDom;
+using System.Linq;
 
 
 namespace PL
 {
     public partial class Form1 : Form
     {
-        //Fält
-        private PodcastService enPodcastService;
-        private Podcast hamtadPodd;
-        private KategoriService enKategoriService;
+        //Fält för alla tre tjänsterna (via interfaces)
+        private readonly IPodcastService enPodcastService;
+        private readonly IKategoriService enKategoriService;
+        private readonly IAvsnittService enAvsnittService;
+        private Podcast hamtadPodd; 
 
-        //Konstruktor
-        public Form1()
+
+        //Konstruktorn tar in alla tre tjänster som skickas från Program
+        public Form1(IPodcastService podcastService, IKategoriService kategoriService, IAvsnittService avsnittService)
         {
             InitializeComponent();
 
-            var context = new MongoDbContext();
-
-            enPodcastService = new PodcastService(
-                new PodcastRepository(context),
-                new AvsnittRepository(context),
-                new RssHamtare());
-            enKategoriService = new KategoriService(
-                new KategoriRepository(context));
+            //Sparar undan dem i fälten och skyddar mot nullvärden
+            enPodcastService = podcastService ?? throw new ArgumentNullException(nameof(PodcastService));
+            enKategoriService = kategoriService ?? throw new ArgumentNullException(nameof(KategoriService));
+            enAvsnittService = avsnittService ?? throw new ArgumentNullException(nameof(AvsnittService));
         }
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            //await VisaSparadePoddar();
-            //await VisaPodcastComboBox();
-            //await VisaKategorier();
-            //await VisaKategoriComboBoxar();
+            await VisaSparadePoddar();
+            await VisaPodcastComboBox();
+            await VisaKategorier();
+            await VisaKategoriComboBoxar();
         }
 
         private void txtBoxPodd_TextChanged(object sender, EventArgs e)

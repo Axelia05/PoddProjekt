@@ -3,10 +3,11 @@ using Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BL.Interfaces; 
 
 namespace BL
 {
-    public class KategoriService
+    public class KategoriService : IKategoriService
     {
         //Services ska använda DAL:s abstraktioner.
         private readonly IKategoriRepository _kategoriRepo;
