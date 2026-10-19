@@ -11,7 +11,7 @@ namespace DAL
         public MongoDbContext()
         {
 
-            var klient = new MongoClient("mongodb+srv://axeliamoberg_db_user:LÖSENORD@orumongodb.4xaq3qj.mongodb.net/");
+            var klient = new MongoClient("mongodb+srv://axeliamoberg_db_user:Hej050831@orumongodb.4xaq3qj.mongodb.net/");
                 databas = klient.GetDatabase("PoddDb");
         }
 
