@@ -19,8 +19,8 @@ namespace BL
         {
             _avsnittRepo = avsnittRepo;
         }
-    
-
+     
+        // Hämtar alla avsnitt för en podd 
     public async Task<List<Avsnitt>> HamtaAvsnittForPodcastAsync(string podcastId)
         {
             if (string.IsNullOrWhiteSpace(podcastId))
@@ -36,6 +36,7 @@ namespace BL
 
         }
 
+        // Hämtar information om avsnitt
         public async Task<Avsnitt> HamtaAvsnittViaAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
