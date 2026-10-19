@@ -118,6 +118,7 @@
             listBoxValtAvsnitt.Name = "listBoxValtAvsnitt";
             listBoxValtAvsnitt.Size = new Size(260, 179);
             listBoxValtAvsnitt.TabIndex = 4;
+            listBoxValtAvsnitt.SelectedIndexChanged += listBoxValtAvsnitt_SelectedIndexChanged;
             // 
             // lblDetaljer
             // 
