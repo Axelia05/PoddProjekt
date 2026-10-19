@@ -18,7 +18,7 @@ namespace PL
         private readonly IPodcastService enPodcastService;
         private readonly IKategoriService enKategoriService;
         private readonly IAvsnittService enAvsnittService;
-        private Podcast hamtadPodd; 
+        private Podcast hamtadPodd;
 
 
         //Konstruktorn tar in alla tre tjänster som skickas från Program
@@ -74,6 +74,14 @@ namespace PL
 
                     await VisaSparadePoddar();
                     await VisaPodcastComboBox();
+
+                    //Återställer fälten och listan till startpunkten
+                    txtBoxSokRss.Text = "";
+                    txtBoxPodd.Text = "";
+                    listBoxAvsnitt.DataSource = null;
+
+                    //Nollställer objektet så minnet rensas
+                    hamtadPodd = null;
 
                     MessageBox.Show("Podcast har sparats!");
                 }
@@ -165,6 +173,9 @@ namespace PL
             if (valdPodd == null)
                 return;
 
+            //Tömmer avsnittsdetaljfältet direkt när man byter podd
+            rtbDetaljer.Text = "";
+
             listBoxValtAvsnitt.DataSource = null;
             listBoxValtAvsnitt.DataSource = valdPodd.Avsnitt;
             listBoxValtAvsnitt.DisplayMember = "Titel";
@@ -227,7 +238,7 @@ namespace PL
 
         }
 
-      
+
 
         private async void btnTilldela_Click(object sender, EventArgs e)
         {
@@ -327,7 +338,7 @@ namespace PL
                 textBoxKategoriNamn.Clear();
 
                 await VisaKategorier();
-                await VisaKategoriComboBoxar(); 
+                await VisaKategoriComboBoxar();
             }
             catch (Exception ex)
             {
@@ -375,7 +386,7 @@ namespace PL
                     return;
 
                 // Visar kategorins namn i textboxen
-                textBoxKategoriNamn.Text = valdKategori.Namn; 
+                textBoxKategoriNamn.Text = valdKategori.Namn;
 
                 // Visar alla poddar som tillhör kategorin
                 var allaPoddar = await enPodcastService.HamtaAllaPoddarAsync();
@@ -389,6 +400,13 @@ namespace PL
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void listBoxValtAvsnitt_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Tömmer detaljfältet när ett nytt avsnitt markeras i listan
+            rtbDetaljer.Text = ""; 
+
         }
     }
 }
