@@ -7,6 +7,7 @@ using DAL.Rss;
 using Models;
 using System.CodeDom;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 
 namespace PL
@@ -226,77 +227,7 @@ namespace PL
 
         }
 
-        //Visar kategori i textbox när användaren klickar
-        private void listBoxKategorier_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Kategori valdKategori =
-                (Kategori)listBoxKategorier.SelectedItem;
-
-            if (valdKategori == null)
-                return;
-
-            textBoxKategoriNamn.Text = valdKategori.Namn;
-        }
-
-        //Knapp för att lägga till kategori
-        private async void btnLaggTill_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(textBoxKategoriNamn.Text))
-            {
-                MessageBox.Show("Ange ett namn på kategorin du vill lägga till");
-                return;
-            }
-
-            await enKategoriService.LaggTillKategoriAsync(
-                textBoxKategoriNamn.Text);
-
-            await VisaKategorier();
-            await VisaKategoriComboBoxar();
-
-            textBoxKategoriNamn.Clear();
-        }
-
-        //Knapp för att spara ändrat namn på kategorin  
-        private async void btnSparaAndradKategori_Click(object sender, EventArgs e)
-        {
-            Kategori valdKategori =
-                (Kategori)listBoxKategorier.SelectedItem;
-
-            if (valdKategori == null)
-            {
-                MessageBox.Show("Välj den kategori du vill ändra namn på");
-                return;
-            }
-
-            await enKategoriService.UppdateraKategoriNamnAsync(
-                valdKategori.Id,
-                textBoxKategoriNamn.Text);
-
-            await VisaKategorier();
-            await VisaKategoriComboBoxar();
-
-            MessageBox.Show("Kategorins namn har uppdaterats");
-        }
-
-        private async void btnTaBortKategori_Click(object sender, EventArgs e)
-        {
-            Kategori valdKategori =
-                (Kategori)listBoxKategorier.SelectedItem;
-
-            if (valdKategori == null)
-            {
-                MessageBox.Show("Välj den kategori du vill ta bort");
-                return;
-            }
-
-            await enKategoriService.TaBortKategoriAsync(
-                valdKategori.Id);
-
-            await VisaKategorier();
-            await VisaKategoriComboBoxar();
-
-            MessageBox.Show("Kategorin har nu tagits bort");
-        }
+      
 
         private async void btnTilldela_Click(object sender, EventArgs e)
         {
@@ -344,6 +275,120 @@ namespace PL
         private async void btnVisaAlla_Click(object sender, EventArgs e)
         {
             await VisaSparadePoddar();
+        }
+
+        private void textBoxKategoriNamn_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        // Knapp för att spara ny kategori
+        private async void btnSparaAndradKategori_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Kategori valdKategori = (Kategori)listBoxKategorier.SelectedItem;
+                if (valdKategori == null)
+                {
+                    MessageBox.Show("Välj en kategori i listan som du vill ändra namn på.");
+                    return;
+
+                }
+                string nyttNamn = textBoxKategoriNamn.Text;
+                if (string.IsNullOrWhiteSpace(nyttNamn))
+                {
+                    MessageBox.Show("Det nya kategorinamnet får inte vara tomt.");
+                    return;
+                }
+                await enKategoriService.UppdateraKategoriNamnAsync(valdKategori.Id, nyttNamn);
+                MessageBox.Show("Kategorinamnet har ändrats!");
+                textBoxKategoriNamn.Clear();
+                await VisaKategorier();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        // Knapp för att lägga till kategori
+        private async void btnLaggTill_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string namn = textBoxKategoriNamn.Text;
+                if (string.IsNullOrWhiteSpace(namn))
+                {
+                    MessageBox.Show("Ange ett namn på kategorin du vill lägga till.");
+                    return;
+                }
+                await enKategoriService.LaggTillKategoriAsync(namn);
+                MessageBox.Show("Kategorin har sparats!");
+                textBoxKategoriNamn.Clear();
+
+                await VisaKategorier();
+                await VisaKategoriComboBoxar(); 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private async void btnTaBortKategori_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Kategori valdKategori = (Kategori)listBoxKategorier.SelectedItem;
+                if (valdKategori == null)
+                {
+                    MessageBox.Show("Välj först den kategori som du vill radera.");
+                    return;
+                }
+                DialogResult svar = MessageBox.Show(
+                    $"Är du säker på att du vill radera kategorin '{valdKategori.Namn}'?",
+                    "Bekräfta radering",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (svar == DialogResult.Yes)
+                {
+                    await enKategoriService.TaBortKategoriAsync(valdKategori.Id);
+                    MessageBox.Show("Kategorin har tagits bort.");
+                    await VisaKategorier();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        // Sök poddar med kategori
+        private async void listBoxKategorier_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Kategori valdKategori = (Kategori)listBoxKategorier.SelectedItem;
+
+                if (valdKategori == null)
+                    return;
+
+                // Visar kategorins namn i textboxen
+                textBoxKategoriNamn.Text = valdKategori.Namn; 
+
+                // Visar alla poddar som tillhör kategorin
+                var allaPoddar = await enPodcastService.HamtaAllaPoddarAsync();
+                var poddarIKategori = allaPoddar.Where(p => p.KategoriId == valdKategori.Id).ToList();
+
+                listBoxMinaPoddar.DataSource = null;
+                listBoxMinaPoddar.DataSource = poddarIKategori;
+                listBoxMinaPoddar.DisplayMember = "Namn";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
