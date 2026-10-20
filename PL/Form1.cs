@@ -167,7 +167,7 @@ namespace PL
 
             if (svar == DialogResult.Yes)
             {
-                await enPodcastService.TaBortPodcastAsync(valdPodd.Id);
+                await enPodcastService.TaBortPodcastMedAvsnittAsync(valdPodd.Id);
 
                 await VisaSparadePoddar();
                 await VisaPodcastComboBox();
@@ -177,7 +177,7 @@ namespace PL
         }
 
         //Avsnitt visas då användaren väljer en podd
-        private void comboBoxValj_SelectedIndexChanged(object sender, EventArgs e)
+        private async void comboBoxValj_SelectedIndexChanged(object sender, EventArgs e)
         {
             Podcast valdPodd = (Podcast)comboBoxValj.SelectedItem;
 
@@ -187,8 +187,11 @@ namespace PL
             //Tömmer avsnittsdetaljfältet direkt när man byter podd
             rtbDetaljer.Text = "";
 
+            //Hämtar avsnitt från databasen 
+            var avsnitt = await enAvsnittService.HamtaAvsnittForPodcastAsync(valdPodd.Id);
+
             listBoxValtAvsnitt.DataSource = null;
-            listBoxValtAvsnitt.DataSource = valdPodd.Avsnitt;
+            listBoxValtAvsnitt.DataSource = avsnitt;
             listBoxValtAvsnitt.DisplayMember = "Titel";
         }
 

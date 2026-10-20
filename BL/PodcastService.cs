@@ -28,6 +28,15 @@ namespace BL
         public async Task SparaPodcastAsync(Podcast enPodcast)
         {
             await _podcastRepo.LaggTillPodcastAsync(enPodcast);
+
+            //Sätter podcastId på alla avsnitt
+            foreach(var avsnitt in enPodcast.Avsnitt)
+            {
+                avsnitt.PodcastId = enPodcast.Id; 
+            }
+
+            //Sparar avsnitten i databasen
+            await _avsnittRepo.LaggTillAvsnittListaAsync(enPodcast.Avsnitt);
         }
 
         //Hämtar alla sparade poddar från databasen
@@ -63,7 +72,7 @@ namespace BL
         }
 
         //Tar bort en podd från databas
-        public async Task TaBortPodcastAsync(string podcastId)
+        public async Task TaBortPodcastMedAvsnittAsync(string podcastId)
         {
             await _podcastRepo.TaBortPodcastAsync(podcastId);
         }

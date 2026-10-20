@@ -29,7 +29,7 @@ namespace DAL.Repositories
         //Lägger till en hel lista med avsnitt på en gång (transaktion används för att kunna rulla tillbaka vid fel)
         public async Task LaggTillAvsnittListaAsync(List<Avsnitt> avsnittLista)
         {
-            if(avsnittLista != null && avsnittLista.Count > 0)
+            if (avsnittLista != null && avsnittLista.Count > 0)
             {
                 //Startar en session och transaktion för att säkerställa dataintegriteten
                 using var session = await _avsnittCollection.Database.Client.StartSessionAsync();
@@ -45,15 +45,24 @@ namespace DAL.Repositories
                     await session.AbortTransactionAsync(); //Rullar tillbaka vid fel
                     throw;
                 }
-                
+
             }
         }
+
 
         //Hämtar ett specifikt avsnitt via dess ID
         public async Task<Avsnitt> HamtaAvsnittViaIdAsync(string id)
         {
             return await _avsnittCollection.Find(a => a.Id == id).FirstOrDefaultAsync();
         }
+
+        //Tar bort alla avsnitt kopplade till en podd
+        public async Task TaBortAvsnittForPodcastAsync(IClientSessionHandle session, string podcastId)
+        {
+            await _avsnittCollection.DeleteManyAsync(session, a => a.PodcastId == podcastId);
+
+        }
+
     }
 }
 

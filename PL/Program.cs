@@ -23,8 +23,8 @@ namespace PL
             var context = new MongoDbContext();
 
             //Skapa repositorys via interfacen
-            IPodcastRepository podcastRepo = new PodcastRepository(context);
-            IAvsnittRepository avsnittRepo = new AvsnittRepository(context);    
+            IAvsnittRepository avsnittRepo = new AvsnittRepository(context);
+            IPodcastRepository podcastRepo = new PodcastRepository(context, avsnittRepo);
             IKategoriRepository kategoriRepo = new KategoriRepository(context);
             IRssHamtare rssHamtare = new RssHamtare();
 
