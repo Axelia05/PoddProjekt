@@ -12,7 +12,7 @@ namespace BL.Interfaces
         Task<Podcast> HamtaPodcastAsync(string podcastId);
         Task AndraPodcastNamnAsync(string podcastId, string nyttNamn);
         Task BytKategoriAsync(string podcastId, string KategoriId);
-        Task TaBortPodcastAsync(string podcastId);
+        Task TaBortPodcastMedAvsnittAsync(string podcastId);
         Task<Podcast> HamtaPodcastFranRssAsync(string url);
         Task AndraPodcastKategoriAsync(string podcastId, string kategoriId);
         Task<List<Podcast>> HamtaPoddarForKategoriAsync(string kategoriId);

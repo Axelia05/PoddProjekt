@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Models;
+using MongoDB.Driver;
 
 namespace DAL.Interfaces
 {
@@ -10,5 +11,6 @@ namespace DAL.Interfaces
         Task<List<Avsnitt>> HamtaAvsnittForPodcastAsync(string podcastId);
         Task LaggTillAvsnittListaAsync(List<Avsnitt> avsnittLista);
         Task<Avsnitt> HamtaAvsnittViaIdAsync(string id);
+        Task TaBortAvsnittForPodcastAsync(IClientSessionHandle session, string podcastId);
     }
 }

@@ -11,17 +11,21 @@ namespace DAL.Repositories
     {
         //Kopplingen till MongoDB-samlingen för podcasts
         private readonly IMongoCollection<Podcast> _podcastCollection;
+        private readonly IAvsnittRepository _avsnittRepository; 
 
-        public PodcastRepository(MongoDbContext context)
+        public PodcastRepository(MongoDbContext context, IAvsnittRepository avsnittRepository)
         {
             //Hämtar kollektionen för podcasts från databasen
             _podcastCollection = context.GetCollection<Podcast>("Podcasts");
+
+            //Tar emot avsnitt-repository via interface (dependency injection)
+            _avsnittRepository = avsnittRepository;
         }
 
-        //Hämtar alla sparade possar
+        //Hämtar alla sparade podcasts
         public async Task<List<Podcast>> HamtaAllaPodcastAsync()
         {
-            return await _podcastCollection.Find(p => true).ToListAsync();
+        return await _podcastCollection.Find(p => true).ToListAsync();
         }
 
         //Hämtar en specifik podcast från databasen baserat på dess unika ID
@@ -102,7 +106,12 @@ namespace DAL.Repositories
 
             try
             {
+               //Tar bort podden
                 await _podcastCollection.DeleteOneAsync(session, p => p.Id == id);
+
+                //Tar bort alla avsnitt kopplade till podden 
+                await _avsnittRepository.TaBortAvsnittForPodcastAsync(session, id);
+
                 await session.CommitTransactionAsync(); //Bekräftar ändringen
             }
             catch
