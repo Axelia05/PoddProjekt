@@ -434,7 +434,7 @@
             // 
             // btnSparaAndradKategori
             // 
-            btnSparaAndradKategori.Location = new Point(491, 210);
+            btnSparaAndradKategori.Location = new Point(476, 193);
             btnSparaAndradKategori.Name = "btnSparaAndradKategori";
             btnSparaAndradKategori.Size = new Size(181, 34);
             btnSparaAndradKategori.TabIndex = 6;
@@ -444,7 +444,7 @@
             // 
             // btnTaBortKategori
             // 
-            btnTaBortKategori.Location = new Point(491, 311);
+            btnTaBortKategori.Location = new Point(476, 301);
             btnTaBortKategori.Name = "btnTaBortKategori";
             btnTaBortKategori.Size = new Size(181, 34);
             btnTaBortKategori.TabIndex = 5;
@@ -454,7 +454,7 @@
             // 
             // btnLaggTill
             // 
-            btnLaggTill.Location = new Point(491, 260);
+            btnLaggTill.Location = new Point(476, 248);
             btnLaggTill.Name = "btnLaggTill";
             btnLaggTill.Size = new Size(181, 34);
             btnLaggTill.TabIndex = 4;
@@ -464,19 +464,19 @@
             // 
             // textBoxKategoriNamn
             // 
-            textBoxKategoriNamn.Location = new Point(491, 118);
+            textBoxKategoriNamn.Location = new Point(462, 118);
             textBoxKategoriNamn.Name = "textBoxKategoriNamn";
-            textBoxKategoriNamn.Size = new Size(181, 31);
+            textBoxKategoriNamn.Size = new Size(210, 31);
             textBoxKategoriNamn.TabIndex = 3;
             // 
             // lblKategoriNamn
             // 
             lblKategoriNamn.AutoSize = true;
-            lblKategoriNamn.Location = new Point(548, 90);
+            lblKategoriNamn.Location = new Point(462, 73);
             lblKategoriNamn.Name = "lblKategoriNamn";
-            lblKategoriNamn.Size = new Size(64, 25);
+            lblKategoriNamn.Size = new Size(210, 25);
             lblKategoriNamn.TabIndex = 2;
-            lblKategoriNamn.Text = "Namn:";
+            lblKategoriNamn.Text = "Ange nytt Kategorinamn:";
             // 
             // listBoxKategorier
             // 
