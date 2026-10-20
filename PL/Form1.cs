@@ -18,7 +18,8 @@ namespace PL
         private readonly IPodcastService enPodcastService;
         private readonly IKategoriService enKategoriService;
         private readonly IAvsnittService enAvsnittService;
-        private Podcast hamtadPodd;
+        private Podcast hamtadPodd; 
+
 
 
         //Konstruktorn tar in alla tre tjänster som skickas från Program
@@ -305,6 +306,7 @@ namespace PL
                     return;
 
                 }
+
                 string nyttNamn = textBoxKategoriNamn.Text;
                 if (string.IsNullOrWhiteSpace(nyttNamn))
                 {
@@ -312,7 +314,8 @@ namespace PL
                     return;
                 }
                 await enKategoriService.UppdateraKategoriNamnAsync(valdKategori.Id, nyttNamn);
-                MessageBox.Show("Kategorinamnet har ändrats!");
+                MessageBox.Show("Kategorinamnet har ändrats till " + nyttNamn + "!");
+
                 textBoxKategoriNamn.Clear();
                 await VisaKategorier();
             }
@@ -334,7 +337,7 @@ namespace PL
                     return;
                 }
                 await enKategoriService.LaggTillKategoriAsync(namn);
-                MessageBox.Show("Kategorin har sparats!");
+                MessageBox.Show("Kategorin " + namn + " har lagts till!");
                 textBoxKategoriNamn.Clear();
 
                 await VisaKategorier();
@@ -384,9 +387,6 @@ namespace PL
 
                 if (valdKategori == null)
                     return;
-
-                // Visar kategorins namn i textboxen
-                textBoxKategoriNamn.Text = valdKategori.Namn;
 
                 // Visar alla poddar som tillhör kategorin
                 var allaPoddar = await enPodcastService.HamtaAllaPoddarAsync();
