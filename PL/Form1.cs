@@ -18,7 +18,7 @@ namespace PL
         private readonly IPodcastService enPodcastService;
         private readonly IKategoriService enKategoriService;
         private readonly IAvsnittService enAvsnittService;
-        private Podcast hamtadPodd; 
+        private Podcast hamtadPodd;
 
 
 
@@ -46,6 +46,7 @@ namespace PL
 
         }
 
+        //Knapp för att hämta podden och dess info
         private async void btnHamta_Click(object sender, EventArgs e)
         {
             try
@@ -65,31 +66,39 @@ namespace PL
             }
         }
 
+        //Knapp för att spara podd
         private async void btnSparaPodd_Click(object sender, EventArgs e)
         {
             try
             {
                 if (hamtadPodd != null)
                 {
+                    string poddNamn = hamtadPodd.Namn;
+
                     await enPodcastService.SparaPodcastAsync(hamtadPodd);
 
                     await VisaSparadePoddar();
                     await VisaPodcastComboBox();
 
-                    //Återställer fälten och listan till startpunkten
+                    // Återställer fälten och listan till startpunkten
                     txtBoxSokRss.Text = "";
                     txtBoxPodd.Text = "";
                     listBoxAvsnitt.DataSource = null;
 
-                    //Nollställer objektet så minnet rensas
+                    // Nollställer objektet så minnet rensas
                     hamtadPodd = null;
 
-                    MessageBox.Show("Podcast har sparats!");
+                    MessageBox.Show(
+                        $"Podcasten '{poddNamn}' har lagts till i poddregistret!");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Kunde inte spara podd: {ex.Message}", "Fel", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    $"Kunde inte spara podd: {ex.Message}",
+                    "Fel",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -124,6 +133,7 @@ namespace PL
             listBoxKategorier.DisplayMember = "Namn";
         }
 
+        //Visar kategorier i combobox
         private async Task VisaKategoriComboBoxar()
         {
             var kategorier =
@@ -240,7 +250,7 @@ namespace PL
         }
 
 
-
+        //Knapp för att tilldela en podd en viss kategori
         private async void btnTilldela_Click(object sender, EventArgs e)
         {
             Podcast valdPodd = (Podcast)listBoxMinaPoddar.SelectedItem;
@@ -349,6 +359,7 @@ namespace PL
             }
         }
 
+        //Tar bort en kategori från listan
         private async void btnTaBortKategori_Click(object sender, EventArgs e)
         {
             try
@@ -405,8 +416,19 @@ namespace PL
         private void listBoxValtAvsnitt_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Tömmer detaljfältet när ett nytt avsnitt markeras i listan
-            rtbDetaljer.Text = ""; 
+            rtbDetaljer.Text = "";
 
+        }
+
+        //Rensar sökrutan inför nästa sökning
+        private void btnRensaSok_Click(object sender, EventArgs e)
+        {
+            txtBoxSokRss.Clear();
+            txtBoxPodd.Clear();
+
+            listBoxAvsnitt.DataSource = null;
+
+            hamtadPodd = null;
         }
     }
 }

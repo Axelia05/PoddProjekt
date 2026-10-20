@@ -51,7 +51,7 @@
             listBoxMinaPoddar = new ListBox();
             lblMinaPoddar = new Label();
             tabPageUtforska = new TabPage();
-            button3 = new Button();
+            btnRensaSok = new Button();
             btnSparaPodd = new Button();
             btnHamta = new Button();
             lblAvsnitt = new Label();
@@ -299,7 +299,7 @@
             // 
             // tabPageUtforska
             // 
-            tabPageUtforska.Controls.Add(button3);
+            tabPageUtforska.Controls.Add(btnRensaSok);
             tabPageUtforska.Controls.Add(btnSparaPodd);
             tabPageUtforska.Controls.Add(btnHamta);
             tabPageUtforska.Controls.Add(lblAvsnitt);
@@ -316,20 +316,21 @@
             tabPageUtforska.Text = "Utforska";
             tabPageUtforska.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnRensaSok
             // 
-            button3.Location = new Point(619, 329);
-            button3.Name = "button3";
-            button3.Size = new Size(112, 34);
-            button3.TabIndex = 8;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
+            btnRensaSok.Location = new Point(108, 277);
+            btnRensaSok.Name = "btnRensaSok";
+            btnRensaSok.Size = new Size(145, 34);
+            btnRensaSok.TabIndex = 8;
+            btnRensaSok.Text = "Rensa sökning";
+            btnRensaSok.UseVisualStyleBackColor = true;
+            btnRensaSok.Click += btnRensaSok_Click;
             // 
             // btnSparaPodd
             // 
-            btnSparaPodd.Location = new Point(47, 329);
+            btnSparaPodd.Location = new Point(82, 227);
             btnSparaPodd.Name = "btnSparaPodd";
-            btnSparaPodd.Size = new Size(220, 34);
+            btnSparaPodd.Size = new Size(204, 34);
             btnSparaPodd.TabIndex = 7;
             btnSparaPodd.Text = "Spara till Mina Poddar";
             btnSparaPodd.UseVisualStyleBackColor = true;
@@ -520,7 +521,7 @@
         private Label lblAvsnitt;
         private Label lblPodd;
         private TextBox txtBoxPodd;
-        private Button button3;
+        private Button btnRensaSok;
         private Button btnSparaPodd;
         private Button btnHamta;
         private Label lblValtAvsnitt;

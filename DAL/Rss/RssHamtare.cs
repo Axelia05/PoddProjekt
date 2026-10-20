@@ -43,17 +43,23 @@ namespace DAL.Rss
 
             podcast.Avsnitt = new List<Avsnitt>();
 
-            //Loopar igenom avsnitt
             foreach (var item in dokument.Descendants("item"))
             {
+                DateTime datum;
+
+                DateTime.TryParse(
+                    item.Element("pubDate")?.Value,
+                    out datum);
+
                 podcast.Avsnitt.Add(new Avsnitt
                 {
                     Titel = item.Element("title")?.Value,
-                    Beskrivning = item.Element("description")?.Value
+                    Beskrivning = item.Element("description")?.Value,
+                    Publiceringsdatum = datum
                 });
             }
 
-            return podcast;
+                return podcast;
         }
     }
 }
