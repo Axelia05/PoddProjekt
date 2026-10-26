@@ -243,7 +243,7 @@ namespace PL
                 listBoxValtAvsnitt.DataSource = null;
                 listBoxValtAvsnitt.DataSource = avsnitt;
                 listBoxValtAvsnitt.DisplayMember = "Titel";
-            
+
             }
             catch (Exception ex)
             {
@@ -253,6 +253,7 @@ namespace PL
                       MessageBoxButtons.OK,
                       MessageBoxIcon.Error);
             }
+        }
 
 
         //Knapp för att visa information i rutan till höger
