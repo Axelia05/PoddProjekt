@@ -10,7 +10,7 @@ namespace DAL.Repositories
         private readonly IMongoCollection<Kategori> _kategoriCollection;
         public KategoriRepository(MongoDbContext context)
         {
-            _kategoriCollection = context.GetCollection<Kategori>("kategorier");
+            _kategoriCollection = context.GetCollection<Kategori>("Kategorier");
         }
 
         //Hämtar alla kategorier
