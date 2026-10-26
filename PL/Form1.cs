@@ -1,13 +1,6 @@
 using BL;
 using BL.Interfaces;
-using DAL;
-using DAL.Interfaces;
-using DAL.Repositories;
-using DAL.Rss;
 using Models;
-using System.CodeDom;
-using System.Linq;
-using System.Runtime.InteropServices;
 
 
 namespace PL
