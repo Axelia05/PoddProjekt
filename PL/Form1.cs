@@ -41,11 +41,6 @@ namespace PL
             await VisaKategoriComboBoxar();
         }
 
-        private void txtBoxPodd_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         //Knapp för att hämta podden och dess info
         private async void btnHamta_Click(object sender, EventArgs e)
         {
@@ -247,10 +242,6 @@ namespace PL
             MessageBox.Show("Namnet har ändrats");
         }
 
-        private void comboBoxKategori_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
 
         //Knapp för att tilldela en podd en viss kategori
@@ -300,11 +291,6 @@ namespace PL
         private async void btnVisaAlla_Click(object sender, EventArgs e)
         {
             await VisaSparadePoddar();
-        }
-
-        private void textBoxKategoriNamn_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         // Knapp för att spara ny kategori
