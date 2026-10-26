@@ -9,7 +9,7 @@ namespace DAL
         {
 
             var klient = new MongoClient("mongodb+srv://axeliamoberg_db_user:Hej050831@orumongodb.4xaq3qj.mongodb.net/");
-                databas = klient.GetDatabase("test");
+                databas = klient.GetDatabase("opponering");
         }
 
         public IMongoCollection<T> GetCollection<T>(string namn) => databas.GetCollection<T>(namn);
