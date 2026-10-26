@@ -187,100 +187,160 @@ namespace PL
         //Knapp för att ta bort en podd
         private async void btnTaBortPodd_Click(object sender, EventArgs e)
         {
-            Podcast valdPodd =
-                (Podcast)listBoxMinaPoddar.SelectedItem;
-
-            if (valdPodd == null)
+            try
             {
-                MessageBox.Show("Välj den podcast du vill radera");
-                return;
+                Podcast valdPodd =
+                    (Podcast)listBoxMinaPoddar.SelectedItem;
+
+                if (valdPodd == null)
+                {
+                    MessageBox.Show("Välj den podcast du vill radera");
+                    return;
+                }
+
+                DialogResult svar = MessageBox.Show(
+                    "Är du säker på att du vill radera podcasten?",
+                    "Bekräfta",
+                    MessageBoxButtons.YesNo);
+
+                if (svar == DialogResult.Yes)
+                {
+                    await enPodcastService.TaBortPodcastMedAvsnittAsync(valdPodd.Id);
+
+                    await VisaSparadePoddar();
+                    await VisaPodcastComboBox();
+
+                    MessageBox.Show("Podcasten har tagits bort");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                      $"Podcasten kunde inte tas bort: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
             }
 
-            DialogResult svar = MessageBox.Show(
-                "Är du säker på att du vill radera podcasten?",
-                "Bekräfta",
-                MessageBoxButtons.YesNo);
-
-            if (svar == DialogResult.Yes)
-            {
-                await enPodcastService.TaBortPodcastMedAvsnittAsync(valdPodd.Id);
-
-                await VisaSparadePoddar();
-                await VisaPodcastComboBox();
-
-                MessageBox.Show("Podcasten har tagits bort");
-            }
         }
 
         //Avsnitt visas då användaren väljer en podd
         private async void comboBoxValj_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Podcast valdPodd = (Podcast)comboBoxValj.SelectedItem;
+            try
+            {
+                Podcast valdPodd = (Podcast)comboBoxValj.SelectedItem;
 
-            if (valdPodd == null)
-                return;
+                if (valdPodd == null)
+                    return;
 
-            //Tömmer avsnittsdetaljfältet direkt när man byter podd
-            rtbDetaljer.Text = "";
+                //Tömmer avsnittsdetaljfältet direkt när man byter podd
+                rtbDetaljer.Text = "";
 
-            //Hämtar avsnitt från databasen 
-            var avsnitt = await enAvsnittService.HamtaAvsnittForPodcastAsync(valdPodd.Id);
+                //Hämtar avsnitt från databasen 
+                var avsnitt = await enAvsnittService.HamtaAvsnittForPodcastAsync(valdPodd.Id);
 
-            listBoxValtAvsnitt.DataSource = null;
-            listBoxValtAvsnitt.DataSource = avsnitt;
-            listBoxValtAvsnitt.DisplayMember = "Titel";
-        }
+                listBoxValtAvsnitt.DataSource = null;
+                listBoxValtAvsnitt.DataSource = avsnitt;
+                listBoxValtAvsnitt.DisplayMember = "Titel";
+            
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                      $"Kunde inte hämta avsnitt: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
+            }
+
 
         //Knapp för att visa information i rutan till höger
         private void btnVisaDetaljer_Click(object sender, EventArgs e)
         {
-            Avsnitt valtAvsnitt =
-                (Avsnitt)listBoxValtAvsnitt.SelectedItem;
+            try
+            {
+                Avsnitt valtAvsnitt =
+                    (Avsnitt)listBoxValtAvsnitt.SelectedItem;
 
-            if (valtAvsnitt == null)
-                return;
+                if (valtAvsnitt == null)
+                    return;
 
-            rtbDetaljer.Text =
-                $"Titel: {valtAvsnitt.Titel}\n\n" +
-                $"Datum: {valtAvsnitt.Publiceringsdatum}\n\n" +
-                $"Beskrivning:\n{valtAvsnitt.Beskrivning}";
+                rtbDetaljer.Text =
+                    $"Titel: {valtAvsnitt.Titel}\n\n" +
+                    $"Datum: {valtAvsnitt.Publiceringsdatum}\n\n" +
+                    $"Beskrivning:\n{valtAvsnitt.Beskrivning}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                      $"Kunde inte hämta sparade poddar: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
+            }
         }
+
 
         private void listBoxMinaPoddar_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Podcast valdPodd =
-                (Podcast)listBoxMinaPoddar.SelectedItem;
+            try
+            {
+                Podcast valdPodd =
+                    (Podcast)listBoxMinaPoddar.SelectedItem;
 
-            if (valdPodd == null)
-                return;
+                if (valdPodd == null)
+                    return;
 
-            textBoxNamn.Text = valdPodd.Namn;
+                textBoxNamn.Text = valdPodd.Namn;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                      $"Kunde inte hämta sparade poddar: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
+            }
         }
+
 
         //Sparar namnändrning
         private async void btnSparaÄndring_Click(object sender, EventArgs e)
         {
-            Podcast valdPodd =
-                (Podcast)listBoxMinaPoddar.SelectedItem;
-
-            if (valdPodd == null)
+            try
             {
-                MessageBox.Show("Välj först en podcast att byta namn på");
-                return;
+                Podcast valdPodd =
+                    (Podcast)listBoxMinaPoddar.SelectedItem;
+
+                if (valdPodd == null)
+                {
+                    MessageBox.Show("Välj först en podcast att byta namn på");
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(textBoxNamn.Text))
+                {
+                    MessageBox.Show("Ange ett namn");
+                    return;
+                }
+                await enPodcastService.AndraPodcastNamnAsync(
+                    valdPodd.Id,
+                    textBoxNamn.Text);
+
+                await VisaSparadePoddar();
+                await VisaPodcastComboBox();
+
+                MessageBox.Show("Namnet har ändrats");
             }
-            if (string.IsNullOrWhiteSpace(textBoxNamn.Text))
+            catch (Exception ex)
             {
-                MessageBox.Show("Ange ett namn");
-                return;
+                MessageBox.Show(
+                      $"Kunde inte spara nytt namn: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
             }
-            await enPodcastService.AndraPodcastNamnAsync(
-                valdPodd.Id,
-                textBoxNamn.Text);
 
-            await VisaSparadePoddar();
-            await VisaPodcastComboBox();
-
-            MessageBox.Show("Namnet har ändrats");
         }
 
 
@@ -288,50 +348,89 @@ namespace PL
         //Knapp för att tilldela en podd en viss kategori
         private async void btnTilldela_Click(object sender, EventArgs e)
         {
-            Podcast valdPodd = (Podcast)listBoxMinaPoddar.SelectedItem;
-
-            Kategori valdKategori = (Kategori)comboBoxPoddKategori.SelectedItem;
-
-            if (valdPodd == null)
+            try
             {
-                MessageBox.Show("Välj en podcast");
-                return;
-            }
+                Podcast valdPodd = (Podcast)listBoxMinaPoddar.SelectedItem;
 
-            if (valdKategori == null)
+                Kategori valdKategori = (Kategori)comboBoxPoddKategori.SelectedItem;
+
+                if (valdPodd == null)
+                {
+                    MessageBox.Show("Välj en podcast");
+                    return;
+                }
+
+                if (valdKategori == null)
+                {
+                    MessageBox.Show("Välj en kategori.");
+                    return;
+                }
+
+                await enPodcastService.AndraPodcastKategoriAsync(valdPodd.Id, valdKategori.Id);
+
+                MessageBox.Show("Podcasten har tilldelats den valda kategorin");
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show("Välj en kategori.");
-                return;
+                MessageBox.Show(
+                      $"Kunde inte sparade poddar till angiven kategori: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
             }
-
-            await enPodcastService.AndraPodcastKategoriAsync(valdPodd.Id, valdKategori.Id);
-
-            MessageBox.Show("Podcasten har tilldelats den valda kategorin");
         }
+
 
         //Filtrera poddar som visas efter kategori
         private async void btnVisaKategori_Click(object sender, EventArgs e)
         {
-            Kategori valdKategori = (Kategori)comboBoxFilterKategori.SelectedItem;
-
-            if (valdKategori == null)
+            try
             {
-                MessageBox.Show("Välj en kategori.");
-                return;
+                Kategori valdKategori = (Kategori)comboBoxFilterKategori.SelectedItem;
+
+                if (valdKategori == null)
+                {
+                    MessageBox.Show("Välj en kategori.");
+                    return;
+                }
+
+                var poddar =
+                    await enPodcastService.HamtaPoddarForKategoriAsync(
+                        valdKategori.Id);
+
+                listBoxMinaPoddar.DataSource = null;
+                listBoxMinaPoddar.DataSource = poddar;
+                listBoxMinaPoddar.DisplayMember = "Namn";
             }
-
-            var poddar =
-                await enPodcastService.HamtaPoddarForKategoriAsync(
-                    valdKategori.Id);
-
-            listBoxMinaPoddar.DataSource = null;
-            listBoxMinaPoddar.DataSource = poddar;
-            listBoxMinaPoddar.DisplayMember = "Namn";
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                      $"Kunde inte hämta sparade poddar: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
+            }
         }
+
+
+
         //Visar återigen alla poddar i listboxen
         private async void btnVisaAlla_Click(object sender, EventArgs e)
         {
-            await VisaSparadePoddar();
+            try
+            {
+                await VisaSparadePoddar();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                      $"Kunde inte hämta sparade poddar: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
+            }
+
         }
 
         // Knapp för att spara ny kategori
@@ -361,7 +460,11 @@ namespace PL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(
+                     $"Kunde inte spara ny kategori: {ex.Message}",
+                     "Fel",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Error);
             }
         }
 
@@ -385,7 +488,11 @@ namespace PL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(
+                      $"Kunde inte lägga till kategori: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
             }
         }
 
@@ -415,7 +522,11 @@ namespace PL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(
+                     $"Kunde inte ta bort kategori: {ex.Message}",
+                     "Fel",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Error);
             }
         }
 
@@ -439,7 +550,11 @@ namespace PL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(
+                     $"Kunde inte hämta sparade poddar: {ex.Message}",
+                     "Fel",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Error);
             }
         }
 
@@ -452,7 +567,7 @@ namespace PL
 
         //Rensar sökrutan inför nästa sökning
         private void btnRensaSok_Click(object sender, EventArgs e)
-        {
+        { 
             txtBoxSokRss.Clear();
             txtBoxPodd.Clear();
 
