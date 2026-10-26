@@ -100,47 +100,95 @@ namespace PL
         //Lägger till poddar i podcast
         private async Task VisaSparadePoddar()
         {
-            var poddar = await enPodcastService.HamtaAllaPoddarAsync();
-            //Lägger till poddarna i mina poddar
-            listBoxMinaPoddar.DataSource = null;
-            listBoxMinaPoddar.DataSource = poddar;
-            listBoxMinaPoddar.DisplayMember = "Namn";
+            try
+            {
+                var poddar = await enPodcastService.HamtaAllaPoddarAsync();
+                //Lägger till poddarna i mina poddar
+                listBoxMinaPoddar.DataSource = null;
+                listBoxMinaPoddar.DataSource = poddar;
+                listBoxMinaPoddar.DisplayMember = "Namn";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                      $"Kunde inte hämta sparade poddar: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
+            }
+
         }
 
         //Lägger till poddar i combobox för avsnittssidan
         private async Task VisaPodcastComboBox()
         {
-            var poddar = await enPodcastService.HamtaAllaPoddarAsync();
+            try
+            {
+                var poddar = await enPodcastService.HamtaAllaPoddarAsync();
 
-            comboBoxValj.DataSource = null;
-            comboBoxValj.DataSource = poddar;
-            comboBoxValj.DisplayMember = "Namn";
+                comboBoxValj.DataSource = null;
+                comboBoxValj.DataSource = poddar;
+                comboBoxValj.DisplayMember = "Namn";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                      $"Kunde inte hämta sparade poddar: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
+            }
         }
+
 
         //Lägger in kategorierna
         private async Task VisaKategorier()
         {
-            var kategorier =
-                await enKategoriService.HamtaAllaKategorierAsync();
+            try
+            {
+                var kategorier =
+                    await enKategoriService.HamtaAllaKategorierAsync();
 
-            listBoxKategorier.DataSource = null;
-            listBoxKategorier.DataSource = kategorier;
-            listBoxKategorier.DisplayMember = "Namn";
+                listBoxKategorier.DataSource = null;
+                listBoxKategorier.DataSource = kategorier;
+                listBoxKategorier.DisplayMember = "Namn";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                      $"Kunde inte hämta dina kategorier: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
+            }
+
         }
 
         //Visar kategorier i combobox
         private async Task VisaKategoriComboBoxar()
         {
-            var kategorier =
-                await enKategoriService.HamtaAllaKategorierAsync();
+            try
+            {
+                var kategorier =
+                    await enKategoriService.HamtaAllaKategorierAsync();
 
-            comboBoxPoddKategori.DataSource = null;
-            comboBoxPoddKategori.DataSource = kategorier;
-            comboBoxPoddKategori.DisplayMember = "Namn";
+                comboBoxPoddKategori.DataSource = null;
+                comboBoxPoddKategori.DataSource = kategorier;
+                comboBoxPoddKategori.DisplayMember = "Namn";
 
-            comboBoxFilterKategori.DataSource = null;
-            comboBoxFilterKategori.DataSource = kategorier.ToList();
-            comboBoxFilterKategori.DisplayMember = "Namn";
+                comboBoxFilterKategori.DataSource = null;
+                comboBoxFilterKategori.DataSource = kategorier.ToList();
+                comboBoxFilterKategori.DisplayMember = "Namn";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                      $"Kunde inte hämta dina kategorier: {ex.Message}",
+                      "Fel",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
+            }
+
         }
 
         //Knapp för att ta bort en podd
