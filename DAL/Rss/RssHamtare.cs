@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Xml.Linq;
-using System.Text;
+﻿using System.Xml.Linq;
 using DAL.Interfaces;
 using Models;
 

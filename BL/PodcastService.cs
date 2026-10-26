@@ -1,10 +1,6 @@
 ﻿using BL.Interfaces;
 using DAL.Interfaces;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 
 namespace BL
 {
