@@ -61,6 +61,16 @@ namespace PL
             {
                 if (hamtadPodd != null)
                 {
+                    var allaPoddar = await enPodcastService.HamtaAllaPoddarAsync();
+
+                    bool finnsRedan = allaPoddar.Any(p =>
+                        p.Namn.Equals(hamtadPodd.Namn, StringComparison.OrdinalIgnoreCase));
+
+                    if (finnsRedan)
+                    {
+                        MessageBox.Show("Podcasten finns redan i poddregistret.");
+                        return;
+                    }
                     string poddNamn = hamtadPodd.Namn;
 
                     await enPodcastService.SparaPodcastAsync(hamtadPodd);
