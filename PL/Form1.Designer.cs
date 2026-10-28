@@ -30,7 +30,6 @@
         {
             tabPageAvsnitt = new TabPage();
             rtbDetaljer = new RichTextBox();
-            btnVisaDetaljer = new Button();
             listBoxValtAvsnitt = new ListBox();
             lblDetaljer = new Label();
             lblValtAvsnitt = new Label();
@@ -79,7 +78,6 @@
             // tabPageAvsnitt
             // 
             tabPageAvsnitt.Controls.Add(rtbDetaljer);
-            tabPageAvsnitt.Controls.Add(btnVisaDetaljer);
             tabPageAvsnitt.Controls.Add(listBoxValtAvsnitt);
             tabPageAvsnitt.Controls.Add(lblDetaljer);
             tabPageAvsnitt.Controls.Add(lblValtAvsnitt);
@@ -100,16 +98,6 @@
             rtbDetaljer.Size = new Size(260, 180);
             rtbDetaljer.TabIndex = 7;
             rtbDetaljer.Text = "";
-            // 
-            // btnVisaDetaljer
-            // 
-            btnVisaDetaljer.Location = new Point(48, 370);
-            btnVisaDetaljer.Name = "btnVisaDetaljer";
-            btnVisaDetaljer.Size = new Size(220, 34);
-            btnVisaDetaljer.TabIndex = 6;
-            btnVisaDetaljer.Text = "Visa avsnittsdetaljer";
-            btnVisaDetaljer.UseVisualStyleBackColor = true;
-            btnVisaDetaljer.Click += btnVisaDetaljer_Click;
             // 
             // listBoxValtAvsnitt
             // 
@@ -233,6 +221,7 @@
             comboBoxPoddKategori.Name = "comboBoxPoddKategori";
             comboBoxPoddKategori.Size = new Size(182, 33);
             comboBoxPoddKategori.TabIndex = 9;
+            comboBoxPoddKategori.SelectedIndexChanged += comboBoxPoddKategori_SelectedIndexChanged;
             // 
             // lblPoddKategori
             // 
@@ -528,7 +517,6 @@
         private ComboBox comboBoxValj;
         private Label lblValjPodd;
         private Label lblDetaljer;
-        private Button btnVisaDetaljer;
         private ListBox listBoxValtAvsnitt;
         private RichTextBox rtbDetaljer;
         private Label lblMinaPoddar;

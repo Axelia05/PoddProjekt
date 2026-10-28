@@ -266,31 +266,6 @@ namespace PL
         }
 
 
-        //Knapp för att visa information i rutan till höger
-        private void btnVisaDetaljer_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Avsnitt valtAvsnitt =
-                    (Avsnitt)listBoxValtAvsnitt.SelectedItem;
-
-                if (valtAvsnitt == null)
-                    return;
-
-                rtbDetaljer.Text =
-                    $"Titel: {valtAvsnitt.Titel}\n\n" +
-                    $"Datum: {valtAvsnitt.Publiceringsdatum}\n\n" +
-                    $"Beskrivning:\n{valtAvsnitt.Beskrivning}";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                      $"Kunde inte hämta sparade poddar: {ex.Message}",
-                      "Fel",
-                      MessageBoxButtons.OK,
-                      MessageBoxIcon.Error);
-            }
-        }
 
 
         private void listBoxMinaPoddar_SelectedIndexChanged(object sender, EventArgs e)
@@ -544,47 +519,71 @@ namespace PL
         // Sök poddar med kategori
         private async void listBoxKategorier_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                Kategori valdKategori = (Kategori)listBoxKategorier.SelectedItem;
+            //try
+            //{
+            //    Kategori valdKategori = (Kategori)listBoxKategorier.SelectedItem;
 
-                if (valdKategori == null)
-                    return;
+            //    if (valdKategori == null)
+            //        return;
 
-                // Visar alla poddar som tillhör kategorin
-                var allaPoddar = await enPodcastService.HamtaAllaPoddarAsync();
-                var poddarIKategori = allaPoddar.Where(p => p.KategoriId == valdKategori.Id).ToList();
+            //    // Visar alla poddar som tillhör kategorin
+            //    var allaPoddar = await enPodcastService.HamtaAllaPoddarAsync();
+            //    var poddarIKategori = allaPoddar.Where(p => p.KategoriId == valdKategori.Id).ToList();
 
-                listBoxMinaPoddar.DataSource = null;
-                listBoxMinaPoddar.DataSource = poddarIKategori;
-                listBoxMinaPoddar.DisplayMember = "Namn";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                     $"Kunde inte hämta sparade poddar: {ex.Message}",
-                     "Fel",
-                     MessageBoxButtons.OK,
-                     MessageBoxIcon.Error);
-            }
+            //    listBoxMinaPoddar.DataSource = null;
+            //    listBoxMinaPoddar.DataSource = poddarIKategori;
+            //    listBoxMinaPoddar.DisplayMember = "Namn";
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(
+            //         $"Kunde inte hämta sparade poddar: {ex.Message}",
+            //         "Fel",
+            //         MessageBoxButtons.OK,
+            //         MessageBoxIcon.Error);
+            //}
         }
 
         private void listBoxValtAvsnitt_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Tömmer detaljfältet när ett nytt avsnitt markeras i listan
-            rtbDetaljer.Text = "";
+            try
+            {
+                Avsnitt valtAvsnitt =
+                    (Avsnitt)listBoxValtAvsnitt.SelectedItem;
+
+                if (valtAvsnitt == null)
+                    return;
+
+                rtbDetaljer.Text =
+                    $"Titel: {valtAvsnitt.Titel}\n\n" +
+                    $"Datum: {valtAvsnitt.Publiceringsdatum}\n\n" +
+                    $"Beskrivning:\n{valtAvsnitt.Beskrivning}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Kunde inte visa avsnittsdetaljer: {ex.Message}",
+                    "Fel",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
 
         }
 
         //Rensar sökrutan inför nästa sökning
         private void btnRensaSok_Click(object sender, EventArgs e)
-        { 
+        {
             txtBoxSokRss.Clear();
             txtBoxPodd.Clear();
 
             listBoxAvsnitt.DataSource = null;
 
             hamtadPodd = null;
+        }
+
+        private void comboBoxPoddKategori_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
